@@ -1,4 +1,7 @@
 import pandas as pd
+from datetime import date, timedelta
+
+
 from .covid import COVID
 
 df_lookup = pd.read_csv("data/lookup.csv", sep=",")
@@ -90,6 +93,75 @@ def clean_belgium():
     df_melt["country"] = belgium.country
     return df_melt
 
+
+def clean_denmark():
+    DK = COVID("denmark")
+    DK.scrapper()
+
+    filename = "total.csv"
+
+    df = pd.read_csv(f"{DK.path_to_save}/{filename}")
+
+    df_translated = translate_and_select_cols(df, "denmark")
+
+    df_translated.date = pd.to_datetime(df_translated.date).dt.date
+
+    df_melt = pd.melt(
+        df_translated,
+        id_vars=["date"],
+        value_vars=df_translated.columns.tolist().remove("date"),
+        var_name="key",
+        value_name="value",
+    )
+
+    df_melt["updated_on"] = pd.to_datetime(DK.dt_created)
+    df_melt["updated_on"] = df_melt["updated_on"].dt.date
+    df_melt["source_url"] = DK.params["url_apify"]
+    df_melt["filename"] = filename
+    df_melt["country"] = DK.country
+
+    return df_melt
+
+
+def clean_estonia():
+    EE = COVID("estonia")
+    EE.scrapper()
+
+    filename = "total.csv"
+
+    df = pd.read_csv(f"{EE.path_to_save}/{filename}")
+
+    df = df.iloc[:,range(3,df.shape[1])]
+    df_T = df.T
+    df_T.columns = df_T.iloc[0]
+    df_T=df_T.drop(df_T.index[0]).reset_index()
+    df_T=df_T.rename(columns = {'index':'date_original'})
+    df_T['increment']=df_T.index
+
+    
+    def set_date(row):
+        return date(2020,2,5)+timedelta(days=row['increment'])
+        
+    df_T['date'] = df_T.apply(set_date,axis=1)
+    df_translated = translate_and_select_cols(df_T,"estonia")
+
+    df_translated.date = pd.to_datetime(df_translated.date).dt.date
+
+    df_melt = pd.melt(
+        df_translated,
+        id_vars=["date"],
+        value_vars=df_translated.columns.tolist().remove("date"),
+        var_name="key",
+        value_name="value",
+    )
+
+    df_melt["updated_on"] = pd.to_datetime(EE.dt_created)
+    df_melt["updated_on"] = df_melt["updated_on"].dt.date
+    df_melt["source_url"] = EE.params["url_spreadsheet"]
+    df_melt["filename"] = filename
+    df_melt["country"] = EE.country
+
+    return df_melt
 
 def clean_france():
     france = COVID("france")

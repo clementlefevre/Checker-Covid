@@ -9,8 +9,14 @@ COUNTRIES = {
         "url": "https://epistat.sciensano.be/Data/COVID19BE.xlsx",
         "scrapper": download_belgium,
     },
+    "denmark": {
+        "url_apify": "https://api.apify.com/v2/datasets/Ugq8cNqnhUSjfJeHr/items?format=json&clean=1",
+        "scrapper": download_denmark,
+    },
     "estonia": {
-        "url": "https://docs.google.com/spreadsheets/d/1nGRqoWD6B8zXqBE7ftW2DG5sX9HNTu5FMoehBygLdg0/edit#gid=0"
+        "url_spreadsheet": "https://docs.google.com/spreadsheets/d/1nGRqoWD6B8zXqBE7ftW2DG5sX9HNTu5FMoehBygLdg0/edit#gid=850749030",
+        "url_apify": "https://api.apify.com/v2/datasets/Ix8h3SN2Ngyukf7yM/items?format=json&clean=1",
+        "scrapper": download_estonia,
     },
     "france": {
         "scrapper": download_france,

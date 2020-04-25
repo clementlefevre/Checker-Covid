@@ -3,7 +3,7 @@ austria,,AktuelleErkrankungen,
 austria,,PositivGetestet,cases
 austria,,Genesen,
 austria,,Tot,
-austria,,GesTestungen,tests
+austria,,GesTestungen,cum_tests
 austria,,GesBesFaelle,
 austria,,GesNBVerf,
 austria,,GesIBVerf,
@@ -12,6 +12,9 @@ austria,,GesIBBel,curr_icu
 austria,,BFNH,
 austria,,Erkrankungen,
 austria,,Timestamp,updated_on
+austria,Epikurve.csv,tägliche Erkrankungen,new_cases
+austria,Epikurve.csv,time,date
+austria,,LetzteAktualisierung,date
 belgium,,NR_REPORTING,cases
 belgium,,TOTAL_IN,curr_hospi
 belgium,,TOTAL_IN_ICU,curr_icu
@@ -20,11 +23,31 @@ belgium,,TOTAL_IN_ECMO,current_ecmo
 belgium,,NEW_IN,new_hospi
 belgium,,NEW_OUT,new_out
 belgium,,DATE,date
+france,,hosp,curr_hospi
+france,,jour,date
+france,,sexe,sex
+france,,rea,curr_icu
+france,,nb_test,tested
+germany,,IdBundesland,
+germany,,Bundesland,
+germany,,Landkreis,
+germany,,Altersgruppe,age_group
+germany,,Geschlecht,new_cases
+germany,,AnzahlFall,curr_cases
+germany,,AnzahlTodesfall,curr_dead
+germany,,ObjectId,
+germany,,Meldedatum,date
+germany,,IdLandkreis,
+germany,,Datenstand,
+germany,,NeuerFall,new_cases_brutto
+germany,,NeuerTodesfall,new_dead
+germany,,Refdatum,
+germany,,NeuGenesen,new_cured
+germany,,AnzahlGenesen,curr_cured
 ireland,,TotalConfirmedCovidCases,cases
 ireland,,HospitalisedCovidCases,curr_hospi
 ireland,,RequiringICUCovidCases,curr_icu
 ireland,,datetime,date
-austria,Epikurve.csv,tägliche Erkrankungen,new_cases
 italy,,data,date
 italy,,stato,
 italy,,codice_regione,
@@ -45,10 +68,44 @@ italy,,tamponi,tested
 italy,,casi_testati,cum_tests
 italy,,note_it,
 italy,,note_en,
-austria,Epikurve.csv,time,date
-austria,,LetzteAktualisierung,date
-france,,hosp,curr_hospi
-france,,jour,date
-france,,sexe,sex
-france,,rea,curr_icu
-france,,nb_test,tested
+germany,,cum_AnzahlFall,cases
+portugal,,Data_do_Relatório,date
+portugal,,Confirmados,curr_cases
+portugal,,ConfirmadosEvo,
+portugal,,Recuperados,curr_cured
+portugal,,RecuperadosEvo,new_cured
+portugal,,Óbitos,curr_dead
+portugal,,ÓbitosEvo,new_dead
+portugal,,Suspeitos,
+portugal,,SuspeitosEvo,
+portugal,,Total_de_Casos_Não_confirmados,
+portugal,,AguardamResultado,
+portugal,,Amostras,cum_tests
+portugal,,Amostras_Novas,cum_tests
+portugal,,Casos_Novos,new_cases
+spain,,CCAA,area
+spain,,FECHA,date
+spain,,CASOS,
+spain,,PCR+,cases
+spain,,TestAc+,
+spain,,Hospitalizados,curr_hospi
+spain,,UCI,curr_icu
+spain,,Fallecidos,curr_dead
+spain,,Recuperados,curr_cured
+spain,,diff_PCR+,new_cases
+denmark,,tested,cum_tests
+denmark,,infected,cases
+denmark,,deceased,dead
+denmark,,sourceUrl,source_url
+denmark,,lastUpdatedAtApify,date
+denmark,,recovered,cured
+estonia,,Haiglas,curr_hospi
+estonia,,Kriitilises seisundis (juhitaval hingamisel),icu_respi
+estonia,,Haiglast väljasaanud,cum_out_hospi
+estonia,,Haiglast välja saanud patsiente päevas,current_out_hospi
+estonia,,Uusi inimesi haiglasse,curr_in_hospital
+estonia,,Lahkunud,cum_dead
+estonia,,Lahkunud haiglas (kumulatiivne),cum_out_hospi
+estonia,,Kokku testituid,cum_tested
+estonia,,Teste päevas,curr_tested
+estonia,,date,date

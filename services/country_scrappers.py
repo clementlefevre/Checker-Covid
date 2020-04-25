@@ -43,6 +43,19 @@ def download_belgium(covid):
         f.write(response.content)
 
 
+def download_denmark(covid):
+    df = pd.read_json(covid.params["url_apify"])
+    df.to_csv(f"{covid.path_to_save}/total.csv")
+
+
+def download_estonia(covid):
+    csv_export_url = covid.params["url_spreadsheet"].replace(
+        "/edit#gid=", "/export?format=csv&gid="
+    )
+    df = pd.read_csv(csv_export_url)
+    df.to_csv(f"{covid.path_to_save}/total.csv")
+
+
 # could not find total cases
 def download_france_total(covid, url_dept, url_values, field):
 
