@@ -56,6 +56,13 @@ def download_estonia(covid):
     df.to_csv(f"{covid.path_to_save}/total.csv")
 
 
+def download_finland(covid):
+    df = pd.read_json(
+        "https://api.apify.com/v2/datasets/BDEAOLx0DzEW91s5L/items?format=json&clean=1"
+    )
+    df.to_csv(f"{covid.path_to_save}/total.csv")
+
+
 # could not find total cases
 def download_france_total(covid, url_dept, url_values, field):
 
@@ -121,7 +128,54 @@ def download_portugal(covid):
     df.to_csv(f"{covid.path_to_save}/total.csv")
 
 
+def download_netherland(covid):
+
+    ## new cases
+    r = requests.get(covid.params["url_new_intake"])
+    df_1 = pd.DataFrame(pd.DataFrame(r.json()).iloc[0])[0].apply(pd.Series)
+    df_1.columns = ["date", "new_cases"]
+    df_2 = pd.DataFrame(pd.DataFrame(r.json()).iloc[1])[1].apply(pd.Series)
+    df_2.columns = ["date", "new_suspected_cases"]
+
+    ## new ICU
+    r = requests.get(covid.params["url_intake_count"])
+    df_curr_icu = pd.DataFrame(r.json())
+
+    df_curr_icu.columns = ["date", "curr_icu"]
+
+    # IC with at least one COVID case
+    r = requests.get(covid.params["url_icu"])
+    df_icu = pd.DataFrame(r.json())
+    df_icu.columns = ["date", "icu_with_al_one_case"]
+
+    # ICU Cumulative
+    r = requests.get(covid.params["url_ic_cumulative"])
+    df_icu_cum = pd.DataFrame(r.json())
+    df_icu_cum.columns = ["date", "icu_cumulative"]
+
+    df = pd.merge(df_1, df_2, on="date")
+    df = pd.merge(df, df_curr_icu, on="date")
+    df = pd.merge(df, df_icu, on="date")
+    df = pd.merge(df, df_icu_cum, on="date")
+
+    df.to_csv(f"{covid.path_to_save}/total.csv", index=False)
+
+
+def download_norway(covid):
+    df = pd.read_json(covid.params["url_apify"])
+    df.to_csv(f"{covid.path_to_save}/total.csv", index=False)
+
+
 def download_spain(covid):
     df = pd.read_csv(covid.params["url"], encoding="iso-8859-1")
     df.to_csv(f"{covid.path_to_save}/total.csv")
 
+
+def download_switzerland(covid):
+    df = pd.read_json(covid.params["url_apify"])
+    df.to_csv(f"{covid.path_to_save}/total.csv", index=False)
+
+
+def download_sweden(covid):
+    df = pd.read_json(covid.params["url_apify"])
+    df.to_csv(f"{covid.path_to_save}/total.csv", index=False)

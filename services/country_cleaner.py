@@ -40,7 +40,7 @@ def clean_austria():
     df_global = pd.melt(
         df_translated,
         id_vars=["updated_on", "date"],
-        value_vars=["tests", "curr_hospi", "curr_icu"],
+        value_vars=["cases", "cum_tests", "curr_hospi", "curr_icu"],
         var_name="key",
         value_name="value",
     )
@@ -162,6 +162,39 @@ def clean_estonia():
     df_melt["country"] = EE.country
 
     return df_melt
+
+
+def clean_finland():
+    covid=COVID('finland')
+    covid.scrapper()
+
+    filename = "total.csv"
+
+    df = pd.read_csv(f"{covid.path_to_save}/{filename}")
+
+    df_translated = translate_and_select_cols(df, covid.country)
+
+    df_translated.date = pd.to_datetime(df_translated.date).dt.date
+
+    df_melt = pd.melt(
+        df_translated,
+        id_vars=["date"],
+        value_vars=df_translated.columns.tolist().remove("date"),
+        var_name="key",
+        value_name="value",
+    )
+
+    df_melt["updated_on"] = pd.to_datetime(covid.dt_created)
+    df_melt["updated_on"] = df_melt["updated_on"].dt.date
+    df_melt["source_url"] = covid.params["url_apify"]
+    df_melt["filename"] = filename
+    df_melt["country"] = covid.country
+
+    df_melt = df_melt.drop_duplicates(["key","date"],keep="last")
+
+    return df_melt
+
+
 
 def clean_france():
     france = COVID("france")
@@ -322,6 +355,60 @@ def clean_italy():
 
     return df_melted
 
+def clean_netherland():
+    covid = COVID("netherland")
+    covid.scrapper()
+    
+    filename = "total.csv"
+    df = pd.read_csv(f"{covid.path_to_save}/{filename}")
+
+    df_melted = pd.melt(
+        df,
+        id_vars=["date"],
+        value_vars=df.columns.tolist().remove("date"),
+        var_name="key",
+        value_name="value",
+    )
+
+    df_melted["source_url"] = covid.params["url_icu"]
+    df_melted["updated_on"] = pd.to_datetime(covid.dt_created)
+    df_melted["updated_on"] = df_melted["updated_on"].dt.date
+    df_melted["filename"] = filename
+    df_melted["country"] = covid.country
+
+    return df_melted
+
+    return df
+
+def clean_norway():
+    covid = COVID("norway")
+    covid.scrapper()
+    
+    filename = "total.csv"
+    df = pd.read_csv(f"{covid.path_to_save}/{filename}")
+
+    df_translated = translate_and_select_cols(df, covid.country)
+
+    df_translated.date = pd.to_datetime(df_translated.date).dt.date
+
+    df_melt = pd.melt(
+        df_translated,
+        id_vars=["date"],
+        value_vars=df_translated.columns.tolist().remove("date"),
+        var_name="key",
+        value_name="value",
+    )
+
+    df_melt["updated_on"] = pd.to_datetime(covid.dt_created)
+    df_melt["updated_on"] = df_melt["updated_on"].dt.date
+    df_melt["source_url"] = covid.params["url_apify"]
+    df_melt["filename"] = filename
+    df_melt["country"] = covid.country
+
+    df_melt = df_melt.drop_duplicates(["key","date"],keep="last")
+
+    return df_melt
+
 
 def clean_portugal():
     portugal = COVID("portugal")
@@ -348,6 +435,7 @@ def clean_portugal():
     df_melted["country"] = portugal.country
 
     return df_melted
+
 
 
 def clean_spain():
@@ -382,3 +470,58 @@ def clean_spain():
 
     return df_melted
 
+def clean_swizerland():
+    covid= COVID("switzerland")
+    covid.scrapper()
+    filename = "total.csv"
+    df = pd.read_csv(f"{covid.path_to_save}/{filename}")
+
+    df_translated = translate_and_select_cols(df, covid.country)
+
+    df_translated.date = pd.to_datetime(df_translated.date).dt.date
+
+    df_melt = pd.melt(
+        df_translated,
+        id_vars=["date"],
+        value_vars=df_translated.columns.tolist().remove("date"),
+        var_name="key",
+        value_name="value",
+    )
+
+    df_melt["updated_on"] = pd.to_datetime(covid.dt_created)
+    df_melt["updated_on"] = df_melt["updated_on"].dt.date
+    df_melt["source_url"] = covid.params["url_apify"]
+    df_melt["filename"] = filename
+    df_melt["country"] = covid.country
+
+    df_melt = df_melt.drop_duplicates(["key","date"],keep="last")
+
+    return df_melt
+
+def clean_sweden():
+    covid= COVID("switzerland")
+    covid.scrapper()
+    filename = "total.csv"
+    df = pd.read_csv(f"{covid.path_to_save}/{filename}")
+
+    df_translated = translate_and_select_cols(df, covid.country)
+
+    df_translated.date = pd.to_datetime(df_translated.date).dt.date
+
+    df_melt = pd.melt(
+        df_translated,
+        id_vars=["date"],
+        value_vars=df_translated.columns.tolist().remove("date"),
+        var_name="key",
+        value_name="value",
+    )
+
+    df_melt["updated_on"] = pd.to_datetime(covid.dt_created)
+    df_melt["updated_on"] = df_melt["updated_on"].dt.date
+    df_melt["source_url"] = covid.params["url_apify"]
+    df_melt["filename"] = filename
+    df_melt["country"] = covid.country
+
+    df_melt = df_melt.drop_duplicates(["key","date"],keep="last")
+
+    return df_melt

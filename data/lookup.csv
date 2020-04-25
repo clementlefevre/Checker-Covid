@@ -109,3 +109,33 @@ estonia,,Lahkunud haiglas (kumulatiivne),cum_out_hospi
 estonia,,Kokku testituid,cum_tested
 estonia,,Teste päevas,curr_tested
 estonia,,date,date
+finland,,sourceUrl,
+finland,,lastUpdatedAtApify,
+finland,,readMe,
+finland,,lastUpdatedAtSource,date
+finland,,confirmedCases,cases
+finland,,testedCases,tested_positive
+finland,,tested,tested
+finland,,infected,infected
+finland,,deaths,dead
+norway,,infected,cases
+norway,,infectedByRegion,
+norway,,sourceUrl,
+norway,,lastUpdatedAtApify,date
+norway,,readMe,
+norway,,deaths,dead
+norway,,tested,tested
+switzerland,,sourceUrl,
+switzerland,,lastUpdatedAtApify,date
+switzerland,,readMe,
+switzerland,,lastUpdatedAtSource,
+switzerland,,testedCases,tested
+switzerland,,confirmedCases,tested_positive
+switzerland,,numberOfDeaths,dead
+sweden,,infected,cases
+sweden,,infectedByRegion,
+sweden,,sourceUrl,
+sweden,,lastUpdatedAtApify,date
+sweden,,readMe,
+sweden,,deceased,dead
+sweden,,intensiveCare,icu

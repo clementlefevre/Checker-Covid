@@ -27,6 +27,10 @@ COUNTRIES = {
         "url_test_dept": "https://geodes.santepubliquefrance.fr/GC_refdata.php?nivgeo=dep&extent=fra&lang=fr&prodhash=78312ab6",
         "url_test_values": "https://geodes.santepubliquefrance.fr/GC_indic.php?lang=fr&prodhash=78312ab6&indic=nb_test&dataset=covid_troislabo_quot&view=map2&filters=clage_covid=0,jour=",
     },
+    "finland": {
+        "url_apify": "https://api.apify.com/v2/datasets/BDEAOLx0DzEW91s5L/items?format=json&clean=1",
+        "scrapper": download_finland,
+    },
     "germany": {
         "url_rki": "http://opendata.arcgis.com/agol/arcgis/dd4580c810204019a7b8eb3e0b329dd6/0.csv?",
         "url_total_cases": "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/Coronaf%C3%A4lle_in_den_Bundesl%C3%A4ndern/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22Fallzahl%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&resultType=standard&cacheHint=true",
@@ -49,11 +53,14 @@ COUNTRIES = {
         "url_new_intake": "https://www.stichting-nice.nl/covid-19/public/new-intake/",
         "url_intake_count": "https://www.stichting-nice.nl/covid-19/public/intake-count/",
         "url_icu": "https://www.stichting-nice.nl/covid-19/public/ic-count/",
-        "url_ic_count": "https://www.stichting-nice.nl/covid-19/public/ic-count/",
+        "url_ic_cumulative": "https://www.stichting-nice.nl/covid-19/public/intake-cumulative/",
         "url_actuel": "https://www.rivm.nl/coronavirus-covid-19/actueel",
+        "scrapper": download_netherland,
     },
     "norway": {
-        "url_case": "https://www.fhi.no/en/id/infectious-diseases/coronavirus/daily-reports/daily-reports-COVID19/"
+        "url_case": "https://www.fhi.no/en/id/infectious-diseases/coronavirus/daily-reports/daily-reports-COVID19/",
+        "url_apify": "https://api.apify.com/v2/datasets/6tpTe4Z2TBePRWYti/items?format=json&clean=1",
+        "scrapper": download_norway,
     },
     "portugal": {
         "url_pdf_1": "https://covid19.min-saude.pt/wp-content/uploads/2020/04/51_DGS_boletim_20200422.pdf",
@@ -63,5 +70,13 @@ COUNTRIES = {
     "spain": {
         "url": "https://covid19.isciii.es/resources/serie_historica_acumulados.csv",
         "scrapper": download_spain,
+    },
+    "switzerland": {
+        "url_apify": "https://api.apify.com/v2/datasets/73pVXuygDYAtIMOhI/items?format=json&clean=1",
+        "scrapper": download_switzerland,
+    },
+    "sweden": {
+        "url_apify": "https://api.apify.com/v2/datasets/Nq3XwHX262iDwsFJS/items?format=json&clean=1",
+        "scrapper": download_sweden,
     },
 }
