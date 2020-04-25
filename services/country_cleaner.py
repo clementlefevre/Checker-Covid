@@ -151,6 +151,40 @@ def clean_france():
     return df_france
 
 
+def clean_germany():
+    filename = "RKI.csv"
+    germany = COVID("germany")
+    germany.scrapper()
+    df = pd.read_csv(f"{germany.path_to_save}/{filename}")
+
+    groupy = df.groupby("Meldedatum").sum()
+
+    groupy_cum = groupy.cumsum()
+    groupy_cum.columns = ["cum_" + c for c in groupy.columns]
+
+    df_all = pd.concat([groupy, groupy_cum], axis=1).reset_index()
+
+    df_translated = translate_and_select_cols(df_all, "germany")
+    df_translated["date"] = pd.to_datetime(df_translated["date"])
+    df_translated["date"] = df_translated["date"].dt.date
+
+    df_melted = pd.melt(
+        df_translated,
+        id_vars=["date"],
+        value_vars=df_translated.columns.tolist().remove("date"),
+        var_name="key",
+        value_name="value",
+    )
+
+    df_melted["source_url"] = germany.params["url_rki"]
+    df_melted["updated_on"] = pd.to_datetime(germany.dt_created)
+    df_melted["updated_on"] = df_melted["updated_on"].dt.date
+    df_melted["filename"] = filename
+    df_melted["country"] = germany.country
+
+    return df_melted
+
+
 def clean_ireland():
     ireland = COVID("ireland")
     ireland.scrapper()
@@ -160,7 +194,6 @@ def clean_ireland():
     df_translated = translate_and_select_cols(df, "ireland")
 
     df_translated["date"] = pd.to_datetime(df["Date"], unit="ms")
-    print(df_translated.columns)
 
     df_melted = pd.melt(
         df_translated,
@@ -216,3 +249,64 @@ def clean_italy():
     df_melted["source_url"] = italy.params["url"]
 
     return df_melted
+
+
+def clean_portugal():
+    portugal = COVID("portugal")
+    portugal.scrapper()
+    filename = "total.csv"
+    df = pd.read_csv(f"{portugal.path_to_save}/{filename}")
+
+    df_translated = translate_and_select_cols(df, "portugal")
+
+    df_translated["date"] = pd.to_datetime(df_translated["date"], unit="ms")
+
+    df_melted = pd.melt(
+        df_translated,
+        id_vars=["date"],
+        value_vars=df_translated.columns.tolist().remove("date"),
+        var_name="key",
+        value_name="value",
+    )
+
+    df_melted["source_url"] = portugal.params["url_esri_1"]
+    df_melted["updated_on"] = pd.to_datetime(portugal.dt_created)
+    df_melted["updated_on"] = df_melted["updated_on"].dt.date
+    df_melted["filename"] = filename
+    df_melted["country"] = portugal.country
+
+    return df_melted
+
+
+def clean_spain():
+    spain = COVID("spain")
+    spain.scrapper()
+    filename = "total.csv"
+    df = pd.read_csv(f"{spain.path_to_save}/{filename}")
+
+    df = df[~df["FECHA"].isnull()]
+    df["FECHA"] = pd.to_datetime(df.FECHA, format="%d/%m/%Y")
+    df.tail()
+
+    groupy = df.groupby("FECHA").sum()
+
+    groupy["cum_PCR+"] = groupy["PCR+"].diff()
+
+    df_translated = translate_and_select_cols(groupy.reset_index(), "spain")
+
+    df_melted = pd.melt(
+        df_translated,
+        id_vars=["date"],
+        value_vars=df_translated.columns.tolist().remove("date"),
+        var_name="key",
+        value_name="value",
+    )
+
+    df_melted["source_url"] = spain.params["url"]
+    df_melted["updated_on"] = pd.to_datetime(spain.dt_created)
+    df_melted["updated_on"] = df_melted["updated_on"].dt.date
+    df_melted["filename"] = filename
+    df_melted["country"] = spain.country
+
+    return df_melted
+

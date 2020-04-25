@@ -42,40 +42,6 @@ def download_finland():
     return pd.DataFrame_fro(response.json())
 
 
-# could not find test & hospitalizations
-def download_germany():
-    date = (now - timedelta(days=1)).strftime("%Y-%m-%d")
-    url_cases = COUNTRIES["germany"]["url_total_cases"]
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
-    }
-
-    response_values = requests.get(url_cases, headers=headers)
-    df_cases = pd.DataFrame([response_values.json()["features"][0]["attributes"]])
-    df_cases["date"] = date
-
-    url_icu = (
-        COUNTRIES["germany"]["url_icu_1"] + date + COUNTRIES["germany"]["url_icu_2"]
-    )
-    myfile = requests.get(url_icu)
-    open("data/germany_temp.pdf", "wb").write(myfile.content)
-    all_tables = read_pdf(
-        "data/germany_temp.pdf", guess=True, multiple_tables=True, pages="all"
-    )
-    df_hospitalization = all_tables[2]
-    df_icu = all_tables[3]  # ['Anzahl Fälle']
-
-    df_cases.to_excel(f"data/germany/total_cases_{date}.xlsx")
-    df_hospitalization.to_excel(f"data/germany/total_hospitalizations_{date}.xlsx")
-    df_icu.to_excel(f"data/germany/total_icu_{date}.xlsx")
-
-
-def download_italy():
-    date = now.strftime("%Y-%m-%d")
-    df = pd.read_csv(COUNTRIES["italy"]["url"])
-    df.to_csv(f"data/italy/total_{date}.csv")
-
-
 # ?? what do we need ?
 def download_netherland():
     # https://www.stichting-nice.nl/
@@ -127,17 +93,6 @@ def download_norway():
     total_tested = int(substring.replace(" ", ""))
 
     return {"total_cases": total_cases, "total_tested": total_tested}
-
-
-def download_portugal():
-    date = now.strftime("%Y-%m-%d")
-    # https://covid19.min-saude.pt/ponto-de-situacao-atual-em-portugal/
-    response_values = requests.get(COUNTRIES["portugal"]["url_esri_1"], headers=headers)
-    df = pd.DataFrame(
-        [response_values.json()["features"][0]["attributes"]]
-    ).T.reset_index()
-
-    df.to_csv(f"data/portugal/{date}.csv")
 
 
 def download_spain():

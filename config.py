@@ -22,11 +22,12 @@ COUNTRIES = {
         "url_test_values": "https://geodes.santepubliquefrance.fr/GC_indic.php?lang=fr&prodhash=78312ab6&indic=nb_test&dataset=covid_troislabo_quot&view=map2&filters=clage_covid=0,jour=",
     },
     "germany": {
+        "url_rki": "http://opendata.arcgis.com/agol/arcgis/dd4580c810204019a7b8eb3e0b329dd6/0.csv?",
         "url_total_cases": "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/Coronaf%C3%A4lle_in_den_Bundesl%C3%A4ndern/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22Fallzahl%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&resultType=standard&cacheHint=true",
         "url_icu_1": "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Situationsberichte/",
         "url_icu_2": "-de.pdf?__blob=publicationFile",
         "url_esri_update_date": "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19/FeatureServer/0?f=json",
-        "scrapper": None,
+        "scrapper": download_germany,
     },
     "ireland": {
         "url_1": "https://services1.arcgis.com/eNO7HHeQ3rUcBllm/arcgis/rest/services/CovidStatisticsProfileHPSCIrelandView/FeatureServer/0/query?f=json&where=Date%3Ctimestamp%20%27",
@@ -50,9 +51,11 @@ COUNTRIES = {
     },
     "portugal": {
         "url_pdf_1": "https://covid19.min-saude.pt/wp-content/uploads/2020/04/51_DGS_boletim_20200422.pdf",
-        "url_esri_1": "https://services.arcgis.com/CCZiGSEQbAxxFVh3/arcgis/rest/services/COVID19Portugal_UltimoRel/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&resultOffset=0&resultRecordCount=32000&resultType=standard&cacheHint=true",
+        "url_esri_1": "https://services.arcgis.com/CCZiGSEQbAxxFVh3/arcgis/rest/services/An%C3%A1lises_Extra_Covid/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=Data_do_Relat%C3%B3rio%20asc&resultOffset=0&resultRecordCount=32000&resultType=standard&cacheHint=true",
+        "scrapper": download_portugal,
     },
     "spain": {
-        "url_start": "https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/situacionActual.htm",
+        "url": "https://covid19.isciii.es/resources/serie_historica_acumulados.csv",
+        "scrapper": download_spain,
     },
 }

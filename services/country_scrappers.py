@@ -75,6 +75,11 @@ def download_france(covid):
     )
 
 
+def download_germany(covid):
+    df = pd.read_csv(covid.params["url_rki"])
+    df.to_csv(f"{covid.path_to_save}/RKI.csv")
+
+
 def download_ireland(covid):
 
     # https://geohive.maps.arcgis.com/apps/opsdashboard/index.html#/29dc1fec79164c179d18d8e53df82e96    date = now.strftime("%Y-%m-%d")
@@ -91,5 +96,19 @@ def download_ireland(covid):
 def download_italy(covid):
     date = now.strftime("%Y-%m-%d")
     df = pd.read_csv(covid.params["url"])
+    df.to_csv(f"{covid.path_to_save}/total.csv")
+
+
+def download_portugal(covid):
+    date = now.strftime("%Y-%m-%d")
+    # https://covid19.min-saude.pt/ponto-de-situacao-atual-em-portugal/
+    r = requests.get(covid.params["url_esri_1"], headers=headers)
+    df = pd.DataFrame(r.json()["features"])["attributes"].apply(pd.Series)
+
+    df.to_csv(f"{covid.path_to_save}/total.csv")
+
+
+def download_spain(covid):
+    df = pd.read_csv(covid.params["url"], encoding="iso-8859-1")
     df.to_csv(f"{covid.path_to_save}/total.csv")
 
