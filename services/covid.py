@@ -4,6 +4,9 @@ from config import COUNTRIES
 
 from datetime import datetime
 
+from pathlib import Path
+
+
 from services.country_scrappers import *
 
 
@@ -20,6 +23,8 @@ class COVID:
         self.params = COUNTRIES[country]
         self.data_path = f"data/countries/{country}"
         create_folder()
+        self.path_to_save = f"{self.data_path}/raw/{self.dt_created}"
+        Path(self.path_to_save).mkdir(parents=True, exist_ok=True)
 
     def scrapper(self):
         return self.params["scrapper"](self)

@@ -4,6 +4,22 @@ from .covid import COVID
 df_lookup = pd.read_csv("data/lookup.csv", sep=",")
 
 
+def translate_and_select_cols(df, country):
+    df_cols = pd.DataFrame(df.columns)
+    df_cols.columns = ["original_field_name"]
+    df_cols = pd.merge(
+        df_cols, df_lookup[df_lookup["country"] == country], on="original_field_name"
+    )
+    df_cols = df_cols[~df_cols["tub_name"].isnull()]
+    cols_translations = df_cols.to_dict(orient="records")
+    original_cols_to_filter = [d["original_field_name"] for d in cols_translations]
+    tub_cols_to_filter = [d["tub_name"] for d in cols_translations]
+    df = df[original_cols_to_filter]
+    df.columns = tub_cols_to_filter
+
+    return df
+
+
 def clean_austria():
     austria = COVID("austria")
     austria.scrapper()
@@ -13,103 +29,190 @@ def clean_austria():
     df = pd.read_csv(
         f"{austria.data_path}/raw/{austria.dt_created}/AllgemeinDaten.csv", sep=";"
     )
-    df = df.T
 
-    df.columns = ["value"]
+    df_translated = translate_and_select_cols(df, "austria")
+    df_translated["updated_on"] = pd.to_datetime(df_translated["updated_on"]).dt.date
+    df_translated["date"] = pd.to_datetime(df_translated["date"]).dt.date
 
-    df["country"] = "austria"
-    df = df.reset_index().rename(columns={"index": "original_field_name"})
+    df_global = pd.melt(
+        df_translated,
+        id_vars=["updated_on", "date"],
+        value_vars=["tests", "curr_hospi", "curr_icu"],
+        var_name="key",
+        value_name="value",
+    )
 
-    df_austria = pd.merge(df_lookup, df, on=["country", "original_field_name"])
-    df_austria = df_austria[~df_austria["tub_name"].isnull()]
-    df_austria["retrieved_on"] = austria.dt_created
-    df_austria["date"] = df_austria[
-        df_austria["original_field_name"] == "Timestamp"
-    ].iloc[0]["value"]
-    df_austria["source_url"] = source_name
-    df_austria["file_name"] = file_name
+    df_global["source_url"] = source_name
+    df_global["filename"] = file_name
 
-    return df_austria
+    filename = "Epikurve.csv"
+    df_cases = pd.read_csv(f"{austria.path_to_save}/{filename}", sep=";")
+    df_cases = translate_and_select_cols(df_cases, "austria")
+    df_cases["updated_on"] = pd.to_datetime(df_cases["updated_on"]).dt.date
+
+    df_cases_melted = pd.melt(
+        df_cases,
+        id_vars=["updated_on", "date"],
+        value_vars=["new_cases"],
+        var_name="key",
+        value_name="value",
+    )
+
+    df_cases_melted["source_url"] = source_name
+    df_cases_melted["filename"] = filename
+
+    df_autria_all = pd.concat([df_global, df_cases_melted], axis=0)
+    df_autria_all["country"] = austria.country
+    return df_autria_all
 
 
 def clean_belgium():
     belgium = COVID("belgium")
     belgium.scrapper()
 
-    source_file_path = f"{belgium.data_path}/raw/{belgium.dt_created}/COVID19BE.xlsx"
+    filename = "COVID19BE.xlsx"
+    source_file_path = f"{belgium.data_path}/raw/{belgium.dt_created}/{filename}"
     df_hosp = pd.read_excel(source_file_path, sheet_name="HOSP")
-    date = df_hosp.tail(1).iloc[0]["DATE"]
-    df_hosp = df_hosp.groupby(["DATE"]).sum().tail(1).T.reset_index()
-    df_hosp.columns = ["original_field_name", "value"]
-    df_hosp["retrieved_on"] = belgium.dt_created
-    df_hosp = pd.merge(df_lookup, df_hosp, on="original_field_name")
-    df_hosp = df_hosp[~df_hosp["tub_name"].isnull()]
-    df_hosp["date"] = date
-    df_hosp
-
-    cum_cases_sheet_name = "CASES_MUNI_CUM"
-    df_BE_cum_cases = pd.read_excel(source_file_path, sheet_name=cum_cases_sheet_name)
-    # # cumulated cases, !!! we replace <5 with 3:
-    df_BE_cum_cases["CASES"] = (
-        df_BE_cum_cases["CASES"].str.replace("<5", "3").astype(int)
+    df_hosp_group = df_hosp.groupby(["DATE"]).sum().reset_index()
+    df = translate_and_select_cols(df_hosp_group, "belgium")
+    df_melt = pd.melt(
+        df,
+        id_vars=["date"],
+        value_vars=df.columns.tolist().remove("date"),
+        var_name="key",
+        value_name="value",
     )
-    cum_cases = df_BE_cum_cases[~df_BE_cum_cases["NIS5"].isna()]["CASES"].sum()
-    df_cases = pd.DataFrame(
-        [{"country": "belgium", "tub_name": "cases", "value": cum_cases}]
-    )
-    df_cases["retrieved_on"] = belgium.dt_created
-    df_cases["date"] = date
-    df_cases["original_field_name"] = f"sum_of_sheet_{cum_cases_sheet_name}"
 
-    cum_test_sheet_name = "TESTS"
-    df_test = pd.read_excel(source_file_path, sheet_name=cum_test_sheet_name)
-    df_test = df_test.tail(1)
-    df_test.columns = ["date", "value"]
-    df_test["tub_name"] = "tests"
-    df_test["country"] = "belgium"
-    df_test["retrieved_on"] = belgium.dt_created
-    df_test["original_field_name"] = f"sum_of_sheet_{cum_test_sheet_name}"
-
-    df = pd.concat([df_cases, df_test, df_hosp], axis=0)
-
-    return df
+    df_melt["updated_on"] = pd.to_datetime(belgium.dt_created)
+    df_melt["updated_on"] = df_melt["updated_on"].dt.date
+    df_melt["source_url"] = belgium.params["url"]
+    df_melt["filename"] = filename
+    df_melt["country"] = belgium.country
+    return df_melt
 
 
 def clean_france():
     france = COVID("france")
     france.scrapper()
-    df_hosp = pd.read_csv(
-        f"{france.data_path}/raw/{france.dt_created}/total_hospitalized.csv"
+
+    filename_hosp = "total_hospitalized.csv"
+    df_hosp = pd.read_csv(f"{france.data_path}/raw/{france.dt_created}/{filename_hosp}")
+    df_hosp_translated = translate_and_select_cols(df_hosp, "france")
+    df_hosp_translated = df_hosp_translated[df_hosp_translated["sex"] == 0]
+    df_hosp_melted = pd.melt(
+        df_hosp_translated,
+        id_vars=["date"],
+        value_vars=["curr_hospi"],
+        var_name="key",
+        value_name="value",
     )
-    df_hosp = df_hosp.tail(1)[["jour", "hosp"]]
-    df_hosp["tub_name"] = "cases"
-    df_hosp.columns = ["date", "value", "tub_name"]
-    df_icu = pd.read_csv(f"{france.data_path}/raw/{france.dt_created}/total_icu.csv")
-    df_icu = df_icu.tail(1)[["jour", "rea"]]
-    df_icu["tub_name"] = "curr_icu"
-    df_icu.columns = ["date", "value", "tub_name"]
-    df_test = pd.read_csv(f"{france.data_path}/raw/{france.dt_created}/total_test.csv")
-    df_test = df_test.tail(1)[["jour", "nb_test"]]
-    df_test["tub_name"] = "tests"
-    df_test.columns = ["date", "value", "tub_name"]
-    df = pd.concat([df_hosp, df_icu, df_test], axis=0)
-    df["country"] = "france"
-    return df
+
+    df_hosp_melted["source_url"] = france.params["url_hospitalized_values"]
+    df_hosp_melted["filename"] = filename_hosp
+
+    filename_icu = "total_icu.csv"
+    df_icu = pd.read_csv(f"{france.data_path}/raw/{france.dt_created}/{filename_icu}")
+    df_icu_tranlated = translate_and_select_cols(df_icu, "france")
+    df_icu_tranlated = df_icu_tranlated[df_icu_tranlated["sex"] == 0]
+
+    df_icu_melted = pd.melt(
+        df_icu_tranlated,
+        id_vars=["date"],
+        value_vars=["curr_icu"],
+        var_name="key",
+        value_name="value",
+    )
+
+    df_icu_melted["source_url"] = france.params["url_icu_values"]
+    df_icu_melted["filename"] = filename_icu
+    df_icu_melted
+
+    filename_tests = "total_test.csv"
+    df_test = pd.read_csv(
+        f"{france.data_path}/raw/{france.dt_created}/{filename_tests}"
+    )
+    df_test_translated = translate_and_select_cols(df_test, "france")
+
+    df_test_melted = pd.melt(
+        df_test_translated,
+        id_vars=["date"],
+        value_vars=["tested"],
+        var_name="key",
+        value_name="value",
+    )
+
+    df_test_melted["source_url"] = france.params["url_test_values"]
+    df_test_melted["filename"] = filename_tests
+
+    df_france = pd.concat([df_hosp_melted, df_icu_melted, df_test_melted], axis=0)
+    df_france["updated_on"] = pd.to_datetime(france.dt_created)
+    df_france["updated_on"] = df_france["updated_on"].dt.date
+    df_france["country"] = france.country
+    return df_france
 
 
 def clean_ireland():
     ireland = COVID("ireland")
     ireland.scrapper()
-    df = pd.read_csv(
-        f"{ireland.data_path}/raw/{ireland.dt_created}/total_cases_hospi_icu.csv"
+
+    filename = "total_cases_hospi_icu.csv"
+    df = pd.read_csv(f"{ireland.data_path}/raw/{ireland.dt_created}/{filename}")
+    df_translated = translate_and_select_cols(df, "ireland")
+
+    df_translated["date"] = pd.to_datetime(df["Date"], unit="ms")
+    print(df_translated.columns)
+
+    df_melted = pd.melt(
+        df_translated,
+        id_vars=["date"],
+        value_vars=["cases", "curr_hospi", "curr_icu"],
+        var_name="key",
+        value_name="value",
     )
-    df = df.tail(1).T.reset_index()
-    df.columns = ["original_field_name", "value"]
-    df = pd.merge(df, df_lookup, on="original_field_name")
-    df["retrieved_on"] = ireland.dt_created
-    df["source_url"] = (
+
+    df_melted["source_url"] = (
         ireland.params["url_1"] + ireland.dt_created + ireland.params["url_2"]
     )
-    df["file_name"] = "total_cases_hospi_icu.csv"
+    df_melted["updated_on"] = pd.to_datetime(ireland.dt_created)
+    df_melted["updated_on"] = df_melted["updated_on"].dt.date
+    df_melted["filename"] = filename
+    df_melted["country"] = ireland.country
 
-    return df
+    return df_melted
+
+
+def clean_italy():
+    italy = COVID("italy")
+    italy.scrapper()
+    filename = "total.csv"
+
+    italy.path_to_save
+
+    df = pd.read_csv(f"{italy.path_to_save}/{filename}")
+
+    df_translated = translate_and_select_cols(df, "italy")
+
+    df_translated["date"] = pd.to_datetime(df_translated["date"]).dt.date
+
+    df_melted = pd.melt(
+        df_translated,
+        id_vars=["date"],
+        value_vars=[
+            "curr_icu",
+            "curr_hospi",
+            "new_cases",
+            "cases",
+            "tested",
+            "cum_tests",
+        ],
+        var_name="key",
+        value_name="value",
+    )
+
+    df_melted["updated_on"] = pd.to_datetime(italy.dt_created)
+    df_melted["updated_on"] = df_melted["updated_on"].dt.date
+    df_melted["filename"] = filename
+    df_melted["country"] = italy.country
+    df_melted["source_url"] = italy.params["url"]
+
+    return df_melted

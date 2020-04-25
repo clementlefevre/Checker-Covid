@@ -12,7 +12,6 @@ import pygsheets
 from tabula import read_pdf
 
 from lxml import html
-from pathlib import Path
 
 
 from datetime import datetime, timedelta
@@ -33,22 +32,20 @@ def download_zip(file_url, target_path):
 
 
 def download_austria(covid):
-    path_to_save = f"{covid.data_path}/raw/{covid.dt_created}"
-    Path(path_to_save).mkdir(parents=True, exist_ok=True)
-    download_zip(covid.params["url"], path_to_save)
+
+    download_zip(covid.params["url"], covid.path_to_save)
 
 
 def download_belgium(covid):
     response = requests.get(covid.params["url"])
-    path_to_save = f"{covid.data_path}/raw/{covid.dt_created}"
-    Path(path_to_save).mkdir(parents=True, exist_ok=True)
-    with open(f"{path_to_save}/COVID19BE.xlsx", "wb") as f:
+
+    with open(f"{covid.path_to_save}/COVID19BE.xlsx", "wb") as f:
         f.write(response.content)
 
 
 # could not find total cases
 def download_france_total(covid, url_dept, url_values, field):
-    path_to_save = f"{covid.data_path}/raw/{covid.dt_created}"
+
     date = now.strftime("%Y-%m-%d")
     url_values = url_values + now.strftime("%Y-%m-%d")
 
@@ -60,8 +57,7 @@ def download_france_total(covid, url_dept, url_values, field):
     else:
         df = df[df.clage_covid == "0"].groupby("jour").sum().reset_index()
 
-    Path(path_to_save).mkdir(parents=True, exist_ok=True)
-    df.to_csv(f"{path_to_save}/total_{field}.csv")
+    df.to_csv(f"{covid.path_to_save}/total_{field}.csv")
 
 
 def download_france(covid):
@@ -80,8 +76,6 @@ def download_france(covid):
 
 
 def download_ireland(covid):
-    path_to_save = f"{covid.data_path}/raw/{covid.dt_created}"
-    Path(path_to_save).mkdir(parents=True, exist_ok=True)
 
     # https://geohive.maps.arcgis.com/apps/opsdashboard/index.html#/29dc1fec79164c179d18d8e53df82e96    date = now.strftime("%Y-%m-%d")
 
@@ -90,7 +84,12 @@ def download_ireland(covid):
     r = requests.get(url, headers=headers)
 
     df = pd.DataFrame(r.json()["features"])["attributes"].apply(pd.Series)
-    df["datetime"] = pd.to_datetime(df["Date"], unit="ms")
 
-    df.to_csv(f"{path_to_save}/total_cases_hospi_icu.csv")
+    df.to_csv(f"{covid.path_to_save}/total_cases_hospi_icu.csv")
+
+
+def download_italy(covid):
+    date = now.strftime("%Y-%m-%d")
+    df = pd.read_csv(covid.params["url"])
+    df.to_csv(f"{covid.path_to_save}/total.csv")
 
