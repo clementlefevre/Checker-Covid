@@ -52,6 +52,9 @@ def clean_austria():
     df_cases = pd.read_csv(f"{austria.path_to_save}/{filename}", sep=";")
     df_cases = translate_and_select_cols(df_cases, "austria")
     df_cases["updated_on"] = pd.to_datetime(df_cases["updated_on"]).dt.date
+    df_cases['date'] = pd.to_datetime(df_cases['date'],format="%d.%m.%Y").dt.date
+
+    
 
     df_cases_melted = pd.melt(
         df_cases,
@@ -77,11 +80,13 @@ def clean_belgium():
     source_file_path = f"{belgium.data_path}/raw/{belgium.dt_created}/{filename}"
     df_hosp = pd.read_excel(source_file_path, sheet_name="HOSP")
     df_hosp_group = df_hosp.groupby(["DATE"]).sum().reset_index()
-    df = translate_and_select_cols(df_hosp_group, "belgium")
+    df_translated = translate_and_select_cols(df_hosp_group, "belgium")
+
+    df_translated['date']=pd.to_datetime(df_translated['date']).dt.date
     df_melt = pd.melt(
-        df,
+        df_translated,
         id_vars=["date"],
-        value_vars=df.columns.tolist().remove("date"),
+        value_vars=df_translated.columns.tolist().remove("date"),
         var_name="key",
         value_name="value",
     )
@@ -298,7 +303,7 @@ def clean_ireland():
     df = pd.read_csv(f"{ireland.data_path}/raw/{ireland.dt_created}/{filename}")
     df_translated = translate_and_select_cols(df, "ireland")
 
-    df_translated["date"] = pd.to_datetime(df["Date"], unit="ms")
+    df_translated["date"] = pd.to_datetime(df["Date"], unit="ms").dt.date
 
     df_melted = pd.melt(
         df_translated,
@@ -324,13 +329,13 @@ def clean_italy():
     italy.scrapper()
     filename = "total.csv"
 
-    italy.path_to_save
-
+  
     df = pd.read_csv(f"{italy.path_to_save}/{filename}")
 
-    df_translated = translate_and_select_cols(df, "italy")
+    groupy = df.groupby('data').sum().reset_index()
+    df_translated = translate_and_select_cols(groupy,"italy")
 
-    df_translated["date"] = pd.to_datetime(df_translated["date"]).dt.date
+    df_translated['date']=pd.to_datetime(df_translated['date']).dt.date
 
     df_melted = pd.melt(
         df_translated,
@@ -419,6 +424,7 @@ def clean_portugal():
     df_translated = translate_and_select_cols(df, "portugal")
 
     df_translated["date"] = pd.to_datetime(df_translated["date"], unit="ms")
+    df_translated["date"] = df_translated["date"].dt.date
 
     df_melted = pd.melt(
         df_translated,
@@ -446,13 +452,14 @@ def clean_spain():
 
     df = df[~df["FECHA"].isnull()]
     df["FECHA"] = pd.to_datetime(df.FECHA, format="%d/%m/%Y")
-    df.tail()
 
     groupy = df.groupby("FECHA").sum()
 
     groupy["cum_PCR+"] = groupy["PCR+"].diff()
 
     df_translated = translate_and_select_cols(groupy.reset_index(), "spain")
+
+    df_translated['date']=df_translated['date'].dt.date
 
     df_melted = pd.melt(
         df_translated,
@@ -499,7 +506,7 @@ def clean_swizerland():
     return df_melt
 
 def clean_sweden():
-    covid= COVID("switzerland")
+    covid= COVID("sweden")
     covid.scrapper()
     filename = "total.csv"
     df = pd.read_csv(f"{covid.path_to_save}/{filename}")

@@ -23,6 +23,31 @@ belgium,,TOTAL_IN_ECMO,current_ecmo
 belgium,,NEW_IN,new_hospi
 belgium,,NEW_OUT,new_out
 belgium,,DATE,date
+denmark,,tested,cum_tests
+denmark,,infected,cases
+denmark,,deceased,dead
+denmark,,sourceUrl,
+denmark,,lastUpdatedAtApify,date
+denmark,,recovered,cured
+estonia,,Haiglas,curr_hospi
+estonia,,Kriitilises seisundis (juhitaval hingamisel),icu_respi
+estonia,,Haiglast väljasaanud,cum_out_hospi
+estonia,,Haiglast välja saanud patsiente päevas,current_out_hospi
+estonia,,Uusi inimesi haiglasse,curr_in_hospital
+estonia,,Lahkunud,cum_dead
+estonia,,Lahkunud haiglas (kumulatiivne),cum_out_hospi
+estonia,,Kokku testituid,cum_tested
+estonia,,Teste päevas,curr_tested
+estonia,,date,date
+finland,,sourceUrl,
+finland,,lastUpdatedAtApify,
+finland,,readMe,
+finland,,lastUpdatedAtSource,date
+finland,,confirmedCases,cases
+finland,,testedCases,tested_positive
+finland,,tested,tested
+finland,,infected,infected
+finland,,deaths,dead
 france,,hosp,curr_hospi
 france,,jour,date
 france,,sexe,sex
@@ -44,6 +69,7 @@ germany,,NeuerTodesfall,new_dead
 germany,,Refdatum,
 germany,,NeuGenesen,new_cured
 germany,,AnzahlGenesen,curr_cured
+germany,,cum_AnzahlFall,cases
 ireland,,TotalConfirmedCovidCases,cases
 ireland,,HospitalisedCovidCases,curr_hospi
 ireland,,RequiringICUCovidCases,curr_icu
@@ -68,14 +94,20 @@ italy,,tamponi,tested
 italy,,casi_testati,cum_tests
 italy,,note_it,
 italy,,note_en,
-germany,,cum_AnzahlFall,cases
+norway,,infected,cases
+norway,,infectedByRegion,
+norway,,sourceUrl,
+norway,,lastUpdatedAtApify,date
+norway,,readMe,
+norway,,deaths,dead
+norway,,tested,tested
 portugal,,Data_do_Relatório,date
 portugal,,Confirmados,curr_cases
 portugal,,ConfirmadosEvo,
 portugal,,Recuperados,curr_cured
-portugal,,RecuperadosEvo,new_cured
+portugal,,RecuperadosEvo,
 portugal,,Óbitos,curr_dead
-portugal,,ÓbitosEvo,new_dead
+portugal,,ÓbitosEvo,
 portugal,,Suspeitos,
 portugal,,SuspeitosEvo,
 portugal,,Total_de_Casos_Não_confirmados,
@@ -93,45 +125,6 @@ spain,,UCI,curr_icu
 spain,,Fallecidos,curr_dead
 spain,,Recuperados,curr_cured
 spain,,diff_PCR+,new_cases
-denmark,,tested,cum_tests
-denmark,,infected,cases
-denmark,,deceased,dead
-denmark,,sourceUrl,source_url
-denmark,,lastUpdatedAtApify,date
-denmark,,recovered,cured
-estonia,,Haiglas,curr_hospi
-estonia,,Kriitilises seisundis (juhitaval hingamisel),icu_respi
-estonia,,Haiglast väljasaanud,cum_out_hospi
-estonia,,Haiglast välja saanud patsiente päevas,current_out_hospi
-estonia,,Uusi inimesi haiglasse,curr_in_hospital
-estonia,,Lahkunud,cum_dead
-estonia,,Lahkunud haiglas (kumulatiivne),cum_out_hospi
-estonia,,Kokku testituid,cum_tested
-estonia,,Teste päevas,curr_tested
-estonia,,date,date
-finland,,sourceUrl,
-finland,,lastUpdatedAtApify,
-finland,,readMe,
-finland,,lastUpdatedAtSource,date
-finland,,confirmedCases,cases
-finland,,testedCases,tested_positive
-finland,,tested,tested
-finland,,infected,infected
-finland,,deaths,dead
-norway,,infected,cases
-norway,,infectedByRegion,
-norway,,sourceUrl,
-norway,,lastUpdatedAtApify,date
-norway,,readMe,
-norway,,deaths,dead
-norway,,tested,tested
-switzerland,,sourceUrl,
-switzerland,,lastUpdatedAtApify,date
-switzerland,,readMe,
-switzerland,,lastUpdatedAtSource,
-switzerland,,testedCases,tested
-switzerland,,confirmedCases,tested_positive
-switzerland,,numberOfDeaths,dead
 sweden,,infected,cases
 sweden,,infectedByRegion,
 sweden,,sourceUrl,
@@ -139,3 +132,10 @@ sweden,,lastUpdatedAtApify,date
 sweden,,readMe,
 sweden,,deceased,dead
 sweden,,intensiveCare,icu
+switzerland,,sourceUrl,
+switzerland,,lastUpdatedAtApify,date
+switzerland,,readMe,
+switzerland,,lastUpdatedAtSource,
+switzerland,,testedCases,tested
+switzerland,,confirmedCases,tested_positive
+switzerland,,numberOfDeaths,dead
