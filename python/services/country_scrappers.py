@@ -33,7 +33,12 @@ def download_zip(file_url, target_path):
 
 def download_austria(covid):
 
+    # from excel
     download_zip(covid.params["url"], covid.path_to_save)
+
+    # Apify
+    df = pd.read_json(covid.params["url_apify"])
+    df.to_csv(f"{covid.path_to_save}/total.csv")
 
 
 def download_belgium(covid):
@@ -178,4 +183,9 @@ def download_switzerland(covid):
 
 def download_sweden(covid):
     df = pd.read_json(covid.params["url_apify"])
+    df.to_csv(f"{covid.path_to_save}/total.csv", index=False)
+
+
+def download_owid(covid):
+    df = pd.read_csv(covid.params["url"])
     df.to_csv(f"{covid.path_to_save}/total.csv", index=False)

@@ -13,6 +13,8 @@ library(data.table)
 library(ggplot2)
 library(lubridate)
 library(plotly)
+library(ggthemes)
+library(writexl)
 
 source('global.R')
 
@@ -20,33 +22,94 @@ source('global.R')
 # Define server logic required to draw a histogram
 
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output,session) {
+    outVar <- reactive({
+        vars <- unique(DT[country %in% input$country]$key)
     
-    
-
-    
-    country.timeline <- eventReactive(input$country,{
-        
-        filtered.DT <-      DT[country==input$country]
-     
-        filtered.DT
+        return(sort(vars))
     })
     
-
-    output$distPlot <- renderPlot({
-
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white')
-
-    })
+    
+    output$last_update <-
+        renderText({
+            paste0("lastUpdate : ", max(DT$date))
+        })
+    
+    
+    country.timeline <-
+        eventReactive(c(input$country, input$key) , {
+            
+            filtered.DT <-
+                    DT[(country %in%  input$country) &
+                           (key == input$key)]
+                filtered.DT
+            
+        })
+    
+    
     
     output$timeline.1 <-  renderPlotly({
-        p <- ggplot(country.timeline(),aes(date,value))+geom_line(aes(color=key))
-        ggplotly(p)
+        data <-  country.timeline()
+        
+        if (input$pop == "per.100.t.ha") {
+            data$value <-  data$value * 100000 / data$pop_2019
+        }
+        
+        p <-
+            ggplot(data, aes(date, value)) + geom_line(aes(color = country,shape=key))
+        p <- p   
+        
+       # ggplotly(p)
+        
+        fig <- plot_ly(data) 
+        fig <-  fig %>% add_trace(x = ~date, y = ~value, type = 'scatter', mode = 'lines', color=~country,text=~country,
+                                  hovertemplate = paste(
+                                      "<b>%{text}</b>",
+                                      "%{y:,.0f}<br>",
+                                      "%{x}<br>"
+                                   
+                                  ))
+        t <- list(
+            family = "Arial",
+            size = 10,
+            color = 'darkgrey')
+        
+        fig %>% layout(title=input$key,
+                                      font=t)
+        
+        
     })
-
+    
+    output$mytable = DT::renderDataTable({
+        
+        if(input$show.all.keys == FALSE){
+            data <- country.timeline() 
+        } else{
+            data <-  DT[country %in%  input$country]
+          
+            
+        }
+     
+        data[date == input$date][, c("date", "country", "key", "value")]
+    })
+    
+    output$menuitem <- renderUI({
+        pickerInput("key", "key :",
+                    choices = outVar(),multiple = FALSE)
+    })
+    
+    output$downloadXLSX <- downloadHandler(
+        filename = function() {
+            paste("data-", Sys.Date(), ".xlsx", sep="")
+        },
+        content = function(file) {
+            write_xlsx(DT, file)
+        }
+    )
+    
+    observeEvent(input$do_update, {
+        DT <-   fread('https://checkercovid.s3.amazonaws.com/all_EU.csv')
+        shinyalert("OK.", "data have been updated.", type = "success")
+    })
+    
 })
