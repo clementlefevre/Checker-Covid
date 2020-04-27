@@ -16,6 +16,7 @@ def update_all():
             covid = COVID(c)
             logging.info(f"cleaning {c}")
             ALL_EU.append(covid.cleaner())
+            logging.info("Job finished.")
         except Exception as e:
             logging.error("Something went wrong...")
             logging.error(e)

@@ -16,6 +16,7 @@ def job():
     logging.info("Job starts...")
     try:
         update_covid.update_all()
+        logging.info("Job finished")
     except Exception as e:
         logging.error("Something went wrong...")
         logging.error(e)
