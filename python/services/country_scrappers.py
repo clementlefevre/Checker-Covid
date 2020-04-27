@@ -8,7 +8,7 @@ from pdfminer.high_level import extract_text_to_fp
 from pdfminer.layout import LAParams
 
 from pathlib import Path
-import pygsheets
+
 from tabula import read_pdf
 
 from lxml import html
