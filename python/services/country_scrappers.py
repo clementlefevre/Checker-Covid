@@ -10,6 +10,19 @@ from pathlib import Path
 
 from datetime import datetime, timedelta
 
+# https://stackoverflow.com/a/41041028/3209276
+import urllib3
+
+requests.packages.urllib3.disable_warnings()
+requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ":HIGH:!DH:!aNULL"
+try:
+    requests.packages.urllib3.contrib.pyopenssl.util.ssl_.DEFAULT_CIPHERS += (
+        ":HIGH:!DH:!aNULL"
+    )
+except AttributeError:
+    # no pyopenssl support used / needed / available
+    pass
+
 
 now = datetime.now()  # current date and time
 
@@ -19,7 +32,7 @@ headers = {
 
 
 def download_zip(file_url, target_path):
-    url = requests.get(file_url)
+    url = requests.get(file_url, verify=False)
     zipfile = ZipFile(BytesIO(url.content))
     with zipfile as zip_ref:
         zip_ref.extractall(target_path)
