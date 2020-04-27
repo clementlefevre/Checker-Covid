@@ -4,14 +4,8 @@ import pandas as pd
 from zipfile import ZipFile
 from io import BytesIO, StringIO
 
-from pdfminer.high_level import extract_text_to_fp
-from pdfminer.layout import LAParams
 
 from pathlib import Path
-
-from tabula import read_pdf
-
-from lxml import html
 
 
 from datetime import datetime, timedelta
