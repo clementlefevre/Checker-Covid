@@ -1,3 +1,9 @@
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+import logging
+logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(logging.ERROR)
+
+
 import requests
 import re
 import pandas as pd

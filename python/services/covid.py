@@ -8,12 +8,15 @@ from pathlib import Path
 
 
 from services.country_scrappers import *
-from services.country_cleaner import *
+
+import logging
+logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(logging.ERROR)
+
 
 
 def create_folder():
     for country in COUNTRIES.keys():
-        Path(f"data/countries/{country}").mkdir(parents=True, exist_ok=True)
+        Path(f"../data/countries/{country}").mkdir(parents=True, exist_ok=True)
 
 
 class COVID:
@@ -23,7 +26,7 @@ class COVID:
         self.data = {}
         self.params = COUNTRIES[country]
         self.countries_list = COUNTRIES.keys()
-        self.data_path = f"data/countries/{country}"
+        self.data_path = f"../data/countries/{country}"
         # self.COUNTRIES = COUNTRIES
         create_folder()
         self.path_to_save = f"{self.data_path}/raw/{self.dt_created}"

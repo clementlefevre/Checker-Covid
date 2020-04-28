@@ -1,7 +1,13 @@
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 from datetime import datetime
 import pandas as pd
 import boto3
 import logging
+
+urllib3_log = logging.getLogger("urllib3")
+urllib3_log.setLevel(logging.CRITICAL)
 
 from config import COUNTRIES
 from services.covid import COVID
@@ -15,9 +21,9 @@ def update_all():
         try:
 
             covid = COVID(c)
-            logging.info(f"cleaning {c}")
+            logging.info(f"cleaning {c}...")
             ALL_EU.append(covid.cleaner())
-            logging.info("Job finished.")
+            logging.info(f"{c}: cleaned.")
         except Exception as e:
             logging.error("Something went wrong...")
             logging.error(e)

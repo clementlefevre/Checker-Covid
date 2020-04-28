@@ -1,4 +1,5 @@
 import logging
+
 import time
 import schedule
 from services import update_covid
@@ -9,6 +10,9 @@ logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s:%(levelname)s:%(message)s",
 )
+
+logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(logging.ERROR)
+
 
 
 def job():
