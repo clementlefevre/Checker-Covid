@@ -14,7 +14,7 @@ library(shinyalert)
 
 
 dashboardPage(# Set up shinyalert
-    dashboardHeader(title = "checker Covi"),
+    dashboardHeader(title = "Checker Covid"),
     dashboardSidebar(useShinyalert(),  
      
         sidebarMenu(  verbatimTextOutput("last_update"),
@@ -49,8 +49,6 @@ dashboardPage(# Set up shinyalert
                     DT::dataTableOutput("mytable")),
             
             tabItem("rawdata",
-                   
-                    
                     downloadButton("downloadXLSX", "Download all data as XLSX")
             )
         )

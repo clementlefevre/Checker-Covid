@@ -24,7 +24,7 @@ def job():
 
 schedule.every().hour.do(job)
 
-time.sleep(60 * 5)
+# time.sleep(60 * 5)
 
 job()
 

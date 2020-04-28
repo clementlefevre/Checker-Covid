@@ -1,3 +1,4 @@
+from datetime import datetime
 import pandas as pd
 import boto3
 import logging
@@ -38,7 +39,15 @@ def update_all():
     # Let's use Amazon S3
     s3 = boto3.resource("s3")
 
-    # Upload a new file
+    # Upload a new file adn add archive version :
+    now = datetime.now()  # current date and time
+    filename_archive_s3 = f'all_EU_{now.strftime("%Y%m%d_%H:%M:%S")}.csv'
+
     data = open("all_EU.csv", "rb")
     s3.Bucket("checkercovid").put_object(Key="all_EU.csv", Body=data)
+
+    data = open("all_EU.csv", "rb")
+    s3.Bucket("checkercovid").put_object(Key=filename_archive_s3, Body=data)
+
+    
 

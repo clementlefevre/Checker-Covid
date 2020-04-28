@@ -62,7 +62,7 @@ shinyServer(function(input, output,session) {
        # ggplotly(p)
         
         fig <- plot_ly(data) 
-        fig <-  fig %>% add_trace(x = ~date, y = ~value, type = 'scatter', mode = 'lines', color=~country,text=~country,
+        fig <-  fig %>% add_trace(x = ~date, y = ~value, type = 'scatter', mode = 'lines+markers',marker = list( size = 5,opacity = 0.5), color=~country,text=~country,
                                   hovertemplate = paste(
                                       "<b>%{text}</b>",
                                       "%{y:,.0f}<br>",
@@ -103,7 +103,7 @@ shinyServer(function(input, output,session) {
             paste("data-", Sys.Date(), ".xlsx", sep="")
         },
         content = function(file) {
-            write_xlsx(DT, file)
+            write_xlsx(dcast(unique(DT,by=c("date","country","key")),date+country~key,fill="no data",value.var = c('value','source_url'))[order(country,-date)], file)
         }
     )
     
