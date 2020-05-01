@@ -11,6 +11,7 @@ import re
 import pandas as pd
 from zipfile import ZipFile
 from io import BytesIO, StringIO
+from lxml import html
 
 
 from pathlib import Path
@@ -68,6 +69,19 @@ def download_belgium(covid):
 def download_denmark(covid):
     df = pd.read_json(covid.params["url_apify"])
     df.to_csv(f"{covid.path_to_save}/total.csv")
+
+    r = requests.get(covid.params["url_statista"])
+
+    tree = html.fromstring(r.text)
+    data = tree.xpath("//table[@id='statTableHTML']//td/text()")
+    listOdd = data[1::2]  # Elements from list1 starting from 1 iterating by 2
+    listEven = data[::2]  # Elements from list1 starting from 0 iterating by 2
+    df_statista = pd.DataFrame({"curr_hospi": listOdd, "date": listEven})
+
+    df_statista["date"] = df_statista["date"] + " " + str(2020)
+    df_statista["date"] = pd.to_datetime(df_statista["date"])
+
+    df_statista.to_csv(f"{covid.path_to_save}/total_statista.csv", index=False)
 
 
 def download_estonia(covid):

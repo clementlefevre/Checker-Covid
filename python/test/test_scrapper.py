@@ -12,3 +12,15 @@ def test_BE_apify():
     df = covid.cleaner()
 
     df
+
+
+def test_IT_regions():
+    covid = COVID("IT")
+    df = covid.cleaner()
+    df
+
+
+def test_DK():
+    covid = COVID("DK")
+    df = covid.cleaner()
+    df

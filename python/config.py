@@ -33,6 +33,7 @@ COUNTRIES = {
     },
     "DK": {
         "url_apify": "https://api.apify.com/v2/datasets/Ugq8cNqnhUSjfJeHr/items?format=json&clean=1",
+        "url_statista": "https://www.statista.com/statistics/1105720/patients-hospitalized-due-to-coronavirus-in-denmark/",
         "scrapper": download_denmark,
         "cleaner": DK.clean,
     },
