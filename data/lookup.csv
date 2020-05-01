@@ -174,3 +174,16 @@ SE,,deceased,dead
 SE,,intensiveCare,curr_icu
 SE,,Antal patienter:,cum_icu
 SE,,Tabellen är uppdaterad:,date
+BE,,infected,cases
+BE,,tested              ,tested
+BE,,recovered,recovered
+BE,,deaths,dead
+BE,,totalInToHospital,new_hospi
+BE,,totalHospitalized,curr_hospi
+BE,,newlyOutOfHospital ,out_hospi
+BE,,country,
+BE,,historyData,
+BE,,sourceUrl,
+BE,,lastUpdatedAtApify,date
+BE,,lastUpdatedAtSource ,
+BE,,readMe,
