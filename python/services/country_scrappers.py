@@ -171,7 +171,7 @@ def download_netherland(covid):
     # ICU Cumulative
     r = requests.get(covid.params["url_ic_cumulative"])
     df_icu_cum = pd.DataFrame(r.json())
-    df_icu_cum.columns = ["date", "icu_cumulative"]
+    df_icu_cum.columns = ["date", "cum_icu"]
 
     df = pd.merge(df_1, df_2, on="date")
     df = pd.merge(df, df_curr_icu, on="date")

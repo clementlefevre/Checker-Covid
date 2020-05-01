@@ -26,8 +26,11 @@ def create_folder():
 
 
 class COVID:
-    def __init__(self, country, dt_created=now.strftime("%Y-%m-%d"), data={}):
+    def __init__(
+        self, country, update=True, dt_created=now.strftime("%Y-%m-%d"), data={}
+    ):
         self.country = country
+        self.update = update
         self.dt_created = dt_created
         self.data = {}
         self.params = COUNTRIES[country]

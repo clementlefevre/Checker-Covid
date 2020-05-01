@@ -13,12 +13,14 @@ library(shinyWidgets)
 library(shinyalert)
 
 
+
+
 dashboardPage(# Set up shinyalert
     dashboardHeader(title = paste0("Checker Covid \n v.",VERSION)),
     dashboardSidebar(useShinyalert(),  
      
         sidebarMenu(  verbatimTextOutput("last_update"),
-                      actionButton("do_update", "Update Data"),
+                      
                       pickerInput("country", "country :", 
                                 choices=country.list,multiple = TRUE,selected=c("AT"),options = list(`actions-box` = TRUE)),
                     
@@ -44,16 +46,18 @@ dashboardPage(# Set up shinyalert
             ),
             tabItem("table",
                     fluidRow(
-                        column(6,pickerInput("date.from", "from :", 
+                        column(3,pickerInput("date.from", "from :", 
                                              choices=dates.named.list, multiple = FALSE)),
                        
-                            column(6,
+                            column(3,
                     pickerInput("date.to", "to :", 
-                                choices=dates.named.list, multiple = FALSE))),
-                    checkboxInput("show.all.keys", "show all keys", FALSE),
+                                choices=dates.named.list, multiple = FALSE)),
+                    column(3,checkboxInput("show.all.keys", "show all keys", TRUE))),
+                    
                     DT::dataTableOutput("mytable")),
             
             tabItem("rawdata",
+                    actionButton("do_update", "Update Data"),
                     downloadButton("downloadXLSX", "Download all data as XLSX")
             )
         )

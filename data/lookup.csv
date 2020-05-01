@@ -15,6 +15,29 @@ AT,,Timestamp,updated_on
 AT,Epikurve.csv,tägliche Erkrankungen,new_cases
 AT,Epikurve.csv,time,date
 AT,,LetzteAktualisierung,date
+AT_apify,,totalTested,
+AT_apify,,totalCases,
+AT_apify,,totalDeaths,
+AT_apify,,infectedByRegion,
+AT_apify,,curedByRegion,
+AT_apify,,sourceUrl,
+AT_apify,,lastUpdatedAtSource,
+AT_apify,,lastUpdatedAtApify,date
+AT_apify,,readMe,
+AT_apify,,deathByRegion,
+AT_apify,,infected,cases
+AT_apify,,deceased,dead
+AT_apify,,deceasedByRegion,
+AT_apify,,recovered,recovered
+AT_apify,,tested,tested
+AT_apify,,hospitalizationData,
+AT_apify,,totalIcu,curr_icu
+AT_apify,,totalHospitalized,curr_hospi
+AT_apify,,lastudpatedAtSource,
+AT_apify,,recoveredByRegion,
+AT_apify,,testedByRegion,
+AT_apify,,icuByRegion,
+AT_apify,,hospitalizedByRegion,
 BE,,NR_REPORTING,cases
 BE,,TOTAL_IN,curr_hospi
 BE,,TOTAL_IN_ICU,curr_icu
@@ -23,37 +46,13 @@ BE,,TOTAL_IN_ECMO,current_ecmo
 BE,,NEW_IN,new_hospi
 BE,,NEW_OUT,new_out
 BE,,DATE,date
-DK,,tested,cum_tests
-DK,,infected,cases
-DK,,deceased,dead
-DK,,sourceUrl,
-DK,,lastUpdatedAtApify,date
-DK,,recovered,cured
-EE,,Haiglas,curr_hospi
-EE,,Kriitilises seisundis (juhitaval hingamisel),curr_icu
-EE,,Haiglast väljasaanud,cum_out_hospi
-EE,,Haiglast välja saanud patsiente päevas,current_out_hospi
-EE,,Uusi inimesi haiglasse,curr_in_hospital
-EE,,Lahkunud,cum_dead
-EE,,Lahkunud haiglas (kumulatiivne),cum_out_hospi
-EE,,Kokku testituid,cum_tested
-EE,,Teste päevas,curr_tested
-EE,,date,date
-FI,,sourceUrl,
-EE,,Kokku positiivselt testituid,cases
-FI,,lastUpdatedAtApify,
-FI,,readMe,
-FI,,lastUpdatedAtSource,date
-FI,,confirmedCases,cases
-FI,,testedCases,tested_positive
-FI,,tested,tested
-FI,,infected,infected
-FI,,deaths,dead
-FR,,hosp,curr_hospi
-FR,,jour,date
-FR,,sexe,sex
-FR,,rea,curr_icu
-FR,,nb_test,tested
+CH,,sourceUrl,
+CH,,lastUpdatedAtApify,date
+CH,,readMe,
+CH,,lastUpdatedAtSource,
+CH,,testedCases,tested
+CH,,confirmedCases,tested_positive
+CH,,numberOfDeaths,dead
 DE,,IdBundesland,
 DE,,Bundesland,
 DE,,Landkreis,
@@ -71,6 +70,47 @@ DE,,Refdatum,
 DE,,NeuGenesen,new_cured
 DE,,AnzahlGenesen,curr_cured
 DE,,cum_AnzahlFall,cases
+DK,,tested,cum_tests
+DK,,infected,cases
+DK,,deceased,dead
+DK,,sourceUrl,
+DK,,lastUpdatedAtApify,date
+DK,,recovered,cured
+EE,,Haiglas,curr_hospi
+EE,,Kriitilises seisundis (juhitaval hingamisel),curr_icu
+EE,,Haiglast väljasaanud,cum_out_hospi
+EE,,Haiglast välja saanud patsiente päevas,current_out_hospi
+EE,,Uusi inimesi haiglasse,curr_hospi
+EE,,Lahkunud,cum_dead
+EE,,Lahkunud haiglas (kumulatiivne),cum_out_hospi
+EE,,Kokku testituid,cum_tested
+EE,,Teste päevas,curr_tested
+EE,,date,date
+EE,,Kokku positiivselt testituid,cases
+ES,,CCAA,area
+ES,,FECHA,date
+ES,,CASOS,
+ES,,PCR+,cases
+ES,,TestAc+,
+ES,,Hospitalizados,curr_hospi
+ES,,UCI,curr_icu
+ES,,Fallecidos,curr_dead
+ES,,Recuperados,curr_cured
+ES,,diff_PCR+,new_cases
+FI,,sourceUrl,
+FI,,lastUpdatedAtApify,
+FI,,readMe,
+FI,,lastUpdatedAtSource,date
+FI,,confirmedCases,cases
+FI,,testedCases,tested_positive
+FI,,tested,tested
+FI,,infected,infected
+FI,,deaths,dead
+FR,,hosp,curr_hospi
+FR,,jour,date
+FR,,sexe,sex
+FR,,rea,curr_icu
+FR,,nb_test,tested
 IE,,TotalConfirmedCovidCases,cases
 IE,,HospitalisedCovidCases,curr_hospi
 IE,,RequiringICUCovidCases,curr_icu
@@ -102,6 +142,15 @@ NO,,lastUpdatedAtApify,date
 NO,,readMe,
 NO,,deaths,dead
 NO,,tested,tested
+OWID,,total_cases,cases
+OWID,,new_cases,new_cases
+OWID,,total_deaths,dead
+OWID,,new_deaths,new_dead
+OWID,,total_tests,tested
+OWID,,new_tests,new_tested
+OWID,,tests_units,tests_unit
+OWID,,alpha2,country
+OWID,,date,date
 PT,,Data_do_Relatório,date
 PT,,Confirmados,curr_cases
 PT,,ConfirmadosEvo,
@@ -116,60 +165,12 @@ PT,,AguardamResultado,
 PT,,Amostras,cum_tests
 PT,,Amostras_Novas,cum_tests
 PT,,Casos_Novos,new_cases
-ES,,CCAA,area
-ES,,FECHA,date
-ES,,CASOS,
-ES,,PCR+,cases
-ES,,TestAc+,
-ES,,Hospitalizados,curr_hospi
-ES,,UCI,curr_icu
-ES,,Fallecidos,curr_dead
-ES,,Recuperados,curr_cured
-ES,,diff_PCR+,new_cases
 SE,,infected,cases
 SE,,infectedByRegion,
 SE,,sourceUrl,
 SE,,lastUpdatedAtApify,date
 SE,,readMe,
 SE,,deceased,dead
-SE,,intensiveCare,icu
+SE,,intensiveCare,curr_icu
 SE,,Antal patienter:,cum_icu
-CH,,sourceUrl,
-CH,,lastUpdatedAtApify,date
-CH,,readMe,
-CH,,lastUpdatedAtSource,
-CH,,testedCases,tested
-CH,,confirmedCases,tested_positive
-CH,,numberOfDeaths,dead
-OWID,,total_cases,cases
-OWID,,new_cases,new_cases
-OWID,,total_deaths,dead
-OWID,,new_deaths,new_dead
-OWID,,total_tests,tested
-OWID,,new_tests,new_tested
-OWID,,tests_units,tests_unit
-OWID,,alpha2,country
-OWID,,date,date
-AT_apify,,totalTested,
-AT_apify,,totalCases,
-AT_apify,,totalDeaths,
-AT_apify,,infectedByRegion,
-AT_apify,,curedByRegion,
-AT_apify,,sourceUrl,
-AT_apify,,lastUpdatedAtSource,
-AT_apify,,lastUpdatedAtApify,date
-AT_apify,,readMe,
-AT_apify,,deathByRegion,
-AT_apify,,infected,cases
-AT_apify,,deceased,dead
-AT_apify,,deceasedByRegion,
-AT_apify,,recovered,recovered
-AT_apify,,tested,tested
-AT_apify,,hospitalizationData,
-AT_apify,,totalIcu,curr_icu
-AT_apify,,totalHospitalized,curr_hospi
-AT_apify,,lastudpatedAtSource,
-AT_apify,,recoveredByRegion,
-AT_apify,,testedByRegion,
-AT_apify,,icuByRegion,
-AT_apify,,hospitalizedByRegion,
+SE,,Tabellen är uppdaterad:,date
