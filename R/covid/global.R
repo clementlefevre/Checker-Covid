@@ -50,9 +50,11 @@ COLS_FOR_TABLE <- c(
 loadData <-  function() {
   print("LOADING DATA FROM S3...")
   DT <-  fread('https://checkercovid.s3.amazonaws.com/all_EU.csv')
+  #DT <- fread("../../python/all_EU.csv")
   DT$date <- ymd(DT$date)
   DT$value <-  as.numeric(DT$value)
-  DT <-  DT[!is.null(value)]
+  DT <-  DT[!is.na(value)]
+  DT <-  DT[!is.na(key)]
   DT <-  unique(DT, by = c("date", "country", "key"))
   
   
@@ -64,6 +66,7 @@ loadData <-  function() {
 
 
 DT <-  loadData()
+
 
 country.list <-  unique(DT$country) %>% sort()
 dates.list <-   unique(DT$date) %>% sort(decreasing = TRUE)
@@ -87,6 +90,7 @@ castTable <-  function(DT, for.download = FALSE) {
     
     
   } else{
+    
     DT.casted <-
       dcast(
         DT,

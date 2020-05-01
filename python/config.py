@@ -70,7 +70,7 @@ COUNTRIES = {
         "url": "https://covid19.isciii.es/resources/serie_historica_acumulados.csv",
         "scrapper": download_spain,
         "cleaner": ES.clean,
-    },https://github.com/pcm-dpc/COVID-19/blob/master/dati-regioni/dpc-covid19-ita-regioni-latest.csv
+    },
     "IE": {
         "url_1": "https://services1.arcgis.com/eNO7HHeQ3rUcBllm/arcgis/rest/services/CovidStatisticsProfileHPSCIrelandView/FeatureServer/0/query?f=json&where=Date%3Ctimestamp%20%27",
         "url_2": "%2000:00:00%27&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=FID,TotalConfirmedCovidCases,HospitalisedCovidCases,RequiringICUCovidCases,Date&orderByFields=Date%20asc&resultOffset=0&resultRecordCount=32000&resultType=standard&cacheHint=true",
@@ -79,7 +79,6 @@ COUNTRIES = {
     },
     "IT": {
         "url": "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv",
-        "url_regions":"https://github.com/pcm-dpc/COVID-19/blob/master/dati-regioni/dpc-covid19-ita-regioni-latest.csv",
         "scrapper": download_italy,
         "cleaner": IT.clean,
     },

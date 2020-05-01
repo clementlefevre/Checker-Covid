@@ -132,13 +132,13 @@ def download_ireland(covid):
 
     df = pd.DataFrame(r.json()["features"])["attributes"].apply(pd.Series)
 
-    df.to_csv(f"{covid.path_to_save}/total_cases_hospi_icu.csv")
+    df.to_csv(f"{covid.path_to_save}/total_cases_hospi_icu.csv", index=False)
 
 
 def download_italy(covid):
     date = now.strftime("%Y-%m-%d")
     df = pd.read_csv(covid.params["url"])
-    df.to_csv(f"{covid.path_to_save}/total.csv")
+    df.to_csv(f"{covid.path_to_save}/total.csv", index=False)
 
 
 def download_portugal(covid):
@@ -147,7 +147,7 @@ def download_portugal(covid):
     r = requests.get(covid.params["url_esri_1"], headers=headers)
     df = pd.DataFrame(r.json()["features"])["attributes"].apply(pd.Series)
 
-    df.to_csv(f"{covid.path_to_save}/total.csv")
+    df.to_csv(f"{covid.path_to_save}/total.csv", index=False)
 
 
 def download_netherland(covid):
