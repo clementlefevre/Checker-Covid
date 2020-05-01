@@ -1,7 +1,9 @@
 import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 import logging
-logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(logging.ERROR)
+
+logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(logging.ERROR)
 
 
 import requests
@@ -195,8 +197,13 @@ def download_switzerland(covid):
 
 
 def download_sweden(covid):
-    df = pd.read_json(covid.params["url_apify"])
-    df.to_csv(f"{covid.path_to_save}/total.csv", index=False)
+    df_apify = pd.read_json(covid.params["url_apify"])
+    df_apify.to_csv(f"{covid.path_to_save}/total_apify.csv", index=False)
+
+    df_icu = pd.read_html(covid.params["url_current_icu"])
+
+    df_stats_icu = df_icu[0]
+    df_stats_icu.to_csv(f"{covid.path_to_save}/current_icu.csv", index=False)
 
 
 def download_owid(covid):

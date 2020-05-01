@@ -89,8 +89,8 @@ shinyServer(function(input, output,session) {
           
             
         }
-     
-        data[date == input$date][, c("date", "country", "key", "value")]
+     print(input$date.from)
+        data[(date >=input$date.from)& (date <=input$date.to)][, c("date", "country", "key", "value")]
     })
     
     output$menuitem <- renderUI({

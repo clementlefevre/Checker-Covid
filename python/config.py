@@ -115,6 +115,7 @@ COUNTRIES = {
     },
     "SE": {
         "url_apify": "https://api.apify.com/v2/datasets/Nq3XwHX262iDwsFJS/items?format=json&clean=1",
+        "url_current_icu": "https://www.icuregswe.org/data--resultat/covid-19-i-svensk-intensivvard/",
         "scrapper": download_sweden,
         "cleaner": SE.clean,
     },

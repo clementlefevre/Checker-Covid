@@ -14,7 +14,7 @@ library(shinyalert)
 
 
 dashboardPage(# Set up shinyalert
-    dashboardHeader(title = "Checker Covid"),
+    dashboardHeader(title = paste0("Checker Covid \n v.",VERSION)),
     dashboardSidebar(useShinyalert(),  
      
         sidebarMenu(  verbatimTextOutput("last_update"),
@@ -43,8 +43,13 @@ dashboardPage(# Set up shinyalert
                     )
             ),
             tabItem("table",
-                    selectInput("date", "date :", 
-                                choices=date.list),
+                    fluidRow(
+                        column(6,pickerInput("date.from", "from :", 
+                                             choices=dates.named.list, multiple = FALSE)),
+                       
+                            column(6,
+                    pickerInput("date.to", "to :", 
+                                choices=dates.named.list, multiple = FALSE))),
                     checkboxInput("show.all.keys", "show all keys", FALSE),
                     DT::dataTableOutput("mytable")),
             

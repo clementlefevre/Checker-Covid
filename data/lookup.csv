@@ -30,7 +30,7 @@ DK,,sourceUrl,
 DK,,lastUpdatedAtApify,date
 DK,,recovered,cured
 EE,,Haiglas,curr_hospi
-EE,,Kriitilises seisundis (juhitaval hingamisel),icu_respi
+EE,,Kriitilises seisundis (juhitaval hingamisel),curr_icu
 EE,,Haiglast väljasaanud,cum_out_hospi
 EE,,Haiglast välja saanud patsiente päevas,current_out_hospi
 EE,,Uusi inimesi haiglasse,curr_in_hospital
@@ -40,6 +40,7 @@ EE,,Kokku testituid,cum_tested
 EE,,Teste päevas,curr_tested
 EE,,date,date
 FI,,sourceUrl,
+EE,,Kokku positiivselt testituid,cases
 FI,,lastUpdatedAtApify,
 FI,,readMe,
 FI,,lastUpdatedAtSource,date
@@ -132,6 +133,7 @@ SE,,lastUpdatedAtApify,date
 SE,,readMe,
 SE,,deceased,dead
 SE,,intensiveCare,icu
+SE,,Antal patienter:,cum_icu
 CH,,sourceUrl,
 CH,,lastUpdatedAtApify,date
 CH,,readMe,

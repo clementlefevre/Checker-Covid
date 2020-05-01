@@ -1,9 +1,15 @@
 import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 import pandas as pd
 
+import os
 
-df_lookup = pd.read_csv("../data/lookup.csv", sep=",")
+
+file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../..", "data"))
+
+
+df_lookup = pd.read_csv(f"{file_path}/lookup.csv", sep=",")
 
 
 def translate_and_select_cols(df, covid, option=""):
