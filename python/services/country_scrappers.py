@@ -32,9 +32,6 @@ except AttributeError:
     # no pyopenssl support used / needed / available
     pass
 
-
-now = datetime.now()  # current date and time
-
 headers = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
 }
@@ -92,13 +89,6 @@ def download_estonia(covid):
     df.to_csv(f"{covid.path_to_save}/total.csv")
 
 
-def download_finland(covid):
-    df = pd.read_json(
-        "https://api.apify.com/v2/datasets/BDEAOLx0DzEW91s5L/items?format=json&clean=1"
-    )
-    df.to_csv(f"{covid.path_to_save}/total.csv")
-
-
 # could not find total cases
 def download_france_total(covid, url_dept, url_values, field):
 
@@ -150,13 +140,13 @@ def download_ireland(covid):
 
 
 def download_italy(covid):
-    date = now.strftime("%Y-%m-%d")
+
     df = pd.read_csv(covid.params["url"])
     df.to_csv(f"{covid.path_to_save}/total.csv", index=False)
 
 
 def download_portugal(covid):
-    date = now.strftime("%Y-%m-%d")
+    date = datetime.now().strftime("%Y-%m-%d")
     # https://covid19.min-saude.pt/ponto-de-situacao-atual-em-portugal/
     r = requests.get(covid.params["url_esri_1"], headers=headers)
     df = pd.DataFrame(r.json()["features"])["attributes"].apply(pd.Series)

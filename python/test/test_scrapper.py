@@ -24,3 +24,9 @@ def test_DK():
     covid = COVID("DK")
     df = covid.cleaner()
     df
+
+
+def test_FI_hospi_icu():
+    covid = COVID("FI")
+    df = covid.cleaner()
+    df

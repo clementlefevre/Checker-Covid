@@ -3,7 +3,7 @@ import sys
 import os
 
 
-from config import COUNTRIES
+from config import COUNTRIES, HEADERS
 
 from datetime import datetime
 
@@ -27,7 +27,11 @@ def create_folder():
 
 class COVID:
     def __init__(
-        self, country, update=True, dt_created=now.strftime("%Y-%m-%d"), data={}
+        self,
+        country,
+        update=True,
+        dt_created=datetime.now().strftime("%Y-%m-%d"),
+        data={},
     ):
         self.country = country
         self.update = update
@@ -37,7 +41,7 @@ class COVID:
         self.countries_list = COUNTRIES.keys()
 
         self.data_path = f"{file_path}/countries/{country}"
-        # self.COUNTRIES = COUNTRIES
+        self.HEADERS = HEADERS
         create_folder()
         self.path_to_save = f"{self.data_path}/raw/{self.dt_created}"
         Path(self.path_to_save).mkdir(parents=True, exist_ok=True)

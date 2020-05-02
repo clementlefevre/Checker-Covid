@@ -18,6 +18,13 @@ from services.cleaner import (
     OWID,
 )
 
+from services.scrapper import FI_scrap
+
+
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
+}
+
 COUNTRIES = {
     "AT": {
         "url": "https://info.gesundheitsministerium.at/data/data.zip",
@@ -55,7 +62,8 @@ COUNTRIES = {
     },
     "FI": {
         "url_apify": "https://api.apify.com/v2/datasets/BDEAOLx0DzEW91s5L/items?format=json&clean=1",
-        "scrapper": download_finland,
+        "url_hospi_icu": "https://thl.fi/en/web/infectious-diseases/what-s-new/coronavirus-covid-19-latest-updates/situation-update-on-coronavirus",
+        "scrapper": FI_scrap.download,
         "cleaner": FI.clean,
     },
     "DE": {
