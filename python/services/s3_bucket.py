@@ -26,10 +26,15 @@ def _retrieve_current_data_on_s3():
 
 
 def get_current_latest_file_on_s3():
-    df_s3 = _retrieve_current_data_on_s3()
-    latest_file = df_s3[df_s3.last_date == df_s3.last_date.max()]
-    file_name = latest_file.iloc[0].key
-    df = pd.read_csv(f"https://checkercovid.s3.amazonaws.com/{file_name}")
+
+    df = pd.DataFrame()
+    try:
+        df_s3 = _retrieve_current_data_on_s3()
+        latest_file = df_s3[df_s3.last_date == df_s3.last_date.max()]
+        file_name = latest_file.iloc[0].key
+        df = pd.read_csv(f"https://checkercovid.s3.amazonaws.com/{file_name}")
+    except Exception as e:
+        logging.error(f"{filename} not found in bucket ! ")
     return df
 
 
@@ -47,9 +52,9 @@ def upload_to_s3(updated_df, new_df):
 
     # store locally
     new_df.to_csv(
-        f"{file_path}/cleaned_data_archives/{filename_archive_s3}", index=True
+        f"{file_path}/cleaned_data_archives/{filename_archive_s3}", index=False
     )
-    updated_df.to_csv(f"{file_path}/cleaned_data_archives/all_EU.csv", index=True)
+    updated_df.to_csv(f"{file_path}/cleaned_data_archives/all_EU.csv", index=False)
 
     # upload cleaned df to s3
     data = open(f"{file_path}/cleaned_data_archives/{filename_archive_s3}", "rb")

@@ -24,7 +24,7 @@ def update_all():
 
     ALL_EU = []
 
-    for c in COUNTRIES.keys():
+    for c in list(COUNTRIES.keys()):
         try:
 
             covid = COVID(c)
