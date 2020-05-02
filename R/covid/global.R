@@ -15,6 +15,7 @@ COLS_FOR_TABLE <- c(
   "curr_icu",
   "cum_icu",
   "curr_respi",
+  "curr_ipc",
   "owid_cases",
   "owid_tested",
   "new_cases",
@@ -50,7 +51,9 @@ COLS_FOR_TABLE <- c(
 loadData <-  function() {
   print("LOADING DATA FROM S3...")
   DT <-  fread('https://checkercovid.s3.amazonaws.com/all_EU.csv')
-  #DT <- fread("../../python/all_EU.csv")
+  #DT <- fread("../../data/cleaned_data_archives/all_EU.csv")
+  
+  browser()
   DT$date <- ymd(DT$date)
   DT$value <-  as.numeric(DT$value)
   DT <-  DT[!is.na(value)]

@@ -38,6 +38,16 @@ headers = {
 
 
 def download_zip(file_url, target_path):
+    """[download zip file and store it locally]
+
+    [extended_summary]
+
+    :param file_url: [description]
+    :type file_url: [type]
+    :param target_path: [description]
+    :type target_path: [type]
+    """
+
     url = requests.get(file_url, verify=False)
     zipfile = ZipFile(BytesIO(url.content))
     with zipfile as zip_ref:
@@ -92,8 +102,8 @@ def download_estonia(covid):
 # could not find total cases
 def download_france_total(covid, url_dept, url_values, field):
 
-    date = now.strftime("%Y-%m-%d")
-    url_values = url_values + now.strftime("%Y-%m-%d")
+    date = datetime.now().strftime("%Y-%m-%d")
+    url_values = url_values + datetime.now().strftime("%Y-%m-%d")
 
     response_values = requests.get(url_values, headers=headers)
 

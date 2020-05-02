@@ -1,3 +1,5 @@
+
+import collections
 from services.country_scrappers import *
 from services.cleaner import (
     AT,
@@ -25,7 +27,7 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
 }
 
-COUNTRIES = {
+countries_data = {
     "AT": {
         "url": "https://info.gesundheitsministerium.at/data/data.zip",
         "url_apify": "https://api.apify.com/v2/datasets/EFWZ2Q5JAtC6QDSwV/items?format=json&clean=1",
@@ -130,3 +132,6 @@ COUNTRIES = {
         "cleaner": SE.clean,
     },
 }
+
+
+COUNTRIES = collections.OrderedDict(sorted(countries_data.items()))
