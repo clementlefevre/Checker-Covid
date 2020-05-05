@@ -1,6 +1,6 @@
-
 import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 import pandas as pd
 from datetime import date, timedelta
@@ -82,4 +82,3 @@ def clean(covid, scrap=True):
 
     df_autria_all["country"] = covid.country
     return df_autria_all
-

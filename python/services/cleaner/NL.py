@@ -1,5 +1,6 @@
 import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 import pandas as pd
 from datetime import date, timedelta
@@ -30,6 +31,31 @@ def clean(covid):
     df_melted["filename"] = filename
     df_melted["country"] = covid.country
 
-    return df_melted
+    filename_rivm = "current_rivm.csv"
+    df_rivm = pd.read_csv(f"{covid.path_to_save}/{filename_rivm}")
+
+    df_translated = translate_and_select_cols(df_rivm, covid)
+
+    df_translated.date = pd.to_datetime(df_translated.date).dt.date
+
+    df_melt_rivm = pd.melt(
+        df_translated,
+        id_vars=["date"],
+        value_vars=df_translated.columns.tolist().remove("date"),
+        var_name="key",
+        value_name="value",
+    )
+
+    df_melt_rivm["updated_on"] = pd.to_datetime(covid.dt_created)
+    df_melt_rivm["updated_on"] = df_melt_rivm["updated_on"].dt.date
+    df_melt_rivm["source_url"] = covid.params["url_rivm"]
+    df_melt_rivm["filename"] = filename
+    df_melt_rivm["country"] = covid.country
+
+    df = pd.concat([df_melted, df_melt_rivm], axis=0)
+
+    df = df.drop_duplicates(["key", "date"], keep="last")
+
+    return df
 
     return df

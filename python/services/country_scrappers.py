@@ -74,21 +74,23 @@ def download_belgium(covid):
 
 
 def download_denmark(covid):
-    df = pd.read_json(covid.params["url_apify"])
-    df.to_csv(f"{covid.path_to_save}/total.csv")
+    df_apify = pd.read_json(covid.params["url_apify"])
+    df_apify.to_csv(f"{covid.path_to_save}/total.csv")
 
-    r = requests.get(covid.params["url_statista"])
+    all_df = pd.read_html(
+        "https://www.sst.dk/da/corona/tal-og-overvaagning",
+        match="Antal indlagte på sygehus i alt",
+        header=0,
+    )
 
-    tree = html.fromstring(r.text)
-    data = tree.xpath("//table[@id='statTableHTML']//td/text()")
-    listOdd = data[1::2]  # Elements from list1 starting from 1 iterating by 2
-    listEven = data[::2]  # Elements from list1 starting from 0 iterating by 2
-    df_statista = pd.DataFrame({"curr_hospi": listOdd, "date": listEven})
+    df_sst_dk = all_df[0]
+    df_sst_dk["date"] = datetime.now().strftime("%Y-%m-%d")
+    df_sst_dk.columns = [c.strip() for c in df_sst_dk.columns]
+    df_sst_dk.rename(columns={"Unnamed: 0": "area"}, inplace=True)
 
-    df_statista["date"] = df_statista["date"] + " " + str(2020)
-    df_statista["date"] = pd.to_datetime(df_statista["date"])
-
-    df_statista.to_csv(f"{covid.path_to_save}/total_statista.csv", index=False)
+    df_sst_dk.to_csv(
+        f"{covid.path_to_save}/current_sst.csv", index=True, encoding="utf-8"
+    )
 
 
 def download_estonia(covid):
@@ -96,6 +98,7 @@ def download_estonia(covid):
         "/edit#gid=", "/export?format=csv&gid="
     )
     df = pd.read_csv(csv_export_url)
+    df["date"] = covid.d
     df.to_csv(f"{covid.path_to_save}/total.csv")
 
 
@@ -195,6 +198,22 @@ def download_netherland(covid):
     df = pd.merge(df, df_icu_cum, on="date")
 
     df.to_csv(f"{covid.path_to_save}/total.csv", index=False)
+
+    # RIVM
+    all_df = pd.read_html(covid.params["url_rivm"])
+
+    df = all_df[0]
+    df.T
+
+    df[1] = df[1].str.extract("(\d*\.?\d+)").replace("\.", "", regex=True)
+    df_T = df.T
+
+    new_header = df_T.iloc[0]  # grab the first row for the header
+    df_T = df_T[1:]  # take the data less the header row
+    df_T.columns = new_header
+    df_result = df_T.head(1)
+    df_result["date"] = datetime.now().strftime("%Y-%m-%d")
+    df_result.to_csv(f"{covid.path_to_save}/current_rivm.csv", index=False)
 
 
 def download_norway(covid):

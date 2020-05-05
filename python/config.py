@@ -41,6 +41,7 @@ countries_data = {
         "cleaner": BE.clean,
     },
     "DK": {
+        "url_sst_dk":"https://www.sst.dk/da/corona/tal-og-overvaagning",
         "url_apify": "https://api.apify.com/v2/datasets/Ugq8cNqnhUSjfJeHr/items?format=json&clean=1",
         "url_statista": "https://www.statista.com/statistics/1105720/patients-hospitalized-due-to-coronavirus-in-denmark/",
         "scrapper": download_denmark,
@@ -100,6 +101,7 @@ countries_data = {
         "url_icu": "https://www.stichting-nice.nl/covid-19/public/ic-count/",
         "url_ic_cumulative": "https://www.stichting-nice.nl/covid-19/public/intake-cumulative/",
         "url_actuel": "https://www.rivm.nl/coronavirus-covid-19/actueel",
+        "url_rivm" :"https://www.rivm.nl/coronavirus-covid-19/actueel",
         "scrapper": download_netherland,
         "cleaner": NL.clean,
     },
