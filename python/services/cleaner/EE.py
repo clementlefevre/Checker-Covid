@@ -1,5 +1,6 @@
 import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 import pandas as pd
 from datetime import date, timedelta
 
@@ -7,8 +8,6 @@ from ..translator import translate_and_select_cols
 
 
 def clean(covid):
-
-    covid.scrapper()
 
     filename = "total.csv"
 
@@ -44,4 +43,3 @@ def clean(covid):
     df_melt["country"] = covid.country
 
     return df_melt
-

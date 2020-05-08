@@ -54,12 +54,7 @@ shinyServer(function(input, output, session) {
             data$value <-  data$value * 100000 / data$pop_2019
         }
         
-        p <-
-            ggplot(data, aes(date, value)) + geom_line(aes(color = country, shape =
-                                                               key))
-        p <- p
-        
-        # ggplotly(p)
+       
         
         fig <- plot_ly(data)
         fig <-
@@ -80,7 +75,8 @@ shinyServer(function(input, output, session) {
                   color = 'darkgrey')
         
         fig %>% layout(title = input$key,
-                       font = t)
+                       font = t, xaxis = list(range = c(min(data$date), max(data$date))),
+        yaxis = list(range = c(0, max(data$value)*1.05)))
         
         
     })

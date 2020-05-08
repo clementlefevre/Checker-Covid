@@ -20,11 +20,16 @@ from services.covid import COVID
 from services import data_combiner
 
 
-def update_all():
+def update_all(spec_countries=None):
 
     ALL_EU = []
 
-    for c in list(COUNTRIES.keys()):
+    if spec_countries is not None:
+        countries_to_update = spec_countries
+    else:
+        countries_to_update = list(COUNTRIES.keys())
+
+    for c in countries_to_update:
         try:
 
             covid = COVID(c)
@@ -33,7 +38,9 @@ def update_all():
             logging.info(f"{c}: cleaned.")
         except Exception as e:
             logging.error("Something went wrong...")
-            logging.error(e)
+            logging.exception(e)
+
+    logging.info(f"merging data with TSP POP...")
 
     df_pop = pd.read_csv(f"{file_path}/tps00001_1_Data.csv", encoding="utf-8")
     df_pop = df_pop[df_pop["TIME"] == df_pop.TIME.max()][["TIME", "GEO", "Value"]]
@@ -46,5 +53,7 @@ def update_all():
     df = df[~df.value.isnull()]
 
     df = pd.merge(df, df_pop, left_on="country", right_on="alpha2")
+
+    logging.info(f"finished merging data with TSP POP.")
 
     data_combiner.update_current_s3d_dataset(df)

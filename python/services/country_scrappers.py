@@ -67,10 +67,10 @@ def download_austria(covid):
 def download_belgium(covid):
     df = pd.read_json(covid.params["url_apify"])
     df.to_csv(f"{covid.path_to_save}/total_apify.csv", index=False)
-    """ response = requests.get(covid.params["url"])
+    response = requests.get(covid.params["url"])
 
     with open(f"{covid.path_to_save}/COVID19BE.xlsx", "wb") as f:
-        f.write(response.content) """
+        f.write(response.content)
 
 
 def download_denmark(covid):
@@ -98,7 +98,7 @@ def download_estonia(covid):
         "/edit#gid=", "/export?format=csv&gid="
     )
     df = pd.read_csv(csv_export_url)
-    df["date"] = covid.d
+    df["date"] = datetime.now().strftime("%Y-%m-%d")
     df.to_csv(f"{covid.path_to_save}/total.csv")
 
 

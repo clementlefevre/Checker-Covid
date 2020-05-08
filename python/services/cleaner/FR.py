@@ -6,8 +6,6 @@ from ..translator import translate_and_select_cols
 
 def clean(covid):
 
-    covid.scrapper()
-
     filename_hosp = "total_hospitalized.csv"
     df_hosp = pd.read_csv(f"{covid.data_path}/raw/{covid.dt_created}/{filename_hosp}")
     df_hosp_translated = translate_and_select_cols(df_hosp, covid)
@@ -60,4 +58,3 @@ def clean(covid):
     df_france["updated_on"] = df_france["updated_on"].dt.date
     df_france["country"] = covid.country
     return df_france
-

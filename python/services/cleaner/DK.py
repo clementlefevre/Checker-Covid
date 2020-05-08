@@ -62,7 +62,7 @@ def _clean_sst(covid):
 
 
 def clean(covid):
-    covid.scrapper()
+
     df_melt_apify = _clean_apify(covid)
 
     df_melt_sst = _clean_sst(covid)

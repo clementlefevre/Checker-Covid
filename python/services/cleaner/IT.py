@@ -83,7 +83,7 @@ def _clean_regions(covid):
 
 
 def clean(covid):
-    covid.scrapper()
+
     df_country = _clean_country(covid)
     df_regions = _clean_regions(covid)
 

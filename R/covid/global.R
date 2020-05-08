@@ -51,17 +51,15 @@ COLS_FOR_TABLE <- c(
 
 loadData <-  function() {
   print("LOADING DATA FROM S3...")
-  DT <-  fread('https://checkercovid.s3.amazonaws.com/all_EU.csv')
-  #DT <- fread("../../data/cleaned_data_archives/all_EU.csv")
+  #DT <-  fread('https://checkercovid.s3.amazonaws.com/all_EU.csv')
+  DT <- fread("../../data/cleaned_data_archives/all_EU.csv")
   
- 
   DT$date <- ymd(DT$date)
   DT$value <-  as.numeric(DT$value)
   DT <-  DT[!is.na(value)]
   DT <-  DT[!is.na(key)]
   DT <-  unique(DT, by = c("date", "country", "key"))
-  
-  
+  DT <-  DT[date<=Sys.Date()]
   
   DT$key <- factor(DT$key, levels = COLS_FOR_TABLE)
   return(DT)

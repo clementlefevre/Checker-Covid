@@ -10,8 +10,6 @@ from ..translator import translate_and_select_cols
 
 def clean(covid):
 
-    covid.scrapper()
-
     filename = "total.csv"
     df = pd.read_csv(f"{covid.path_to_save}/{filename}")
 

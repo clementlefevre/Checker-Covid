@@ -8,8 +8,7 @@ from services.translator import translate_and_select_cols
 
 
 def clean(covid):
-    if covid.update:
-        covid.scrapper()
+
     filename = "total_apify.csv"
     df = pd.read_csv(f"{covid.path_to_save}/{filename}")
 

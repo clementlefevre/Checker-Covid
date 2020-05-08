@@ -62,7 +62,7 @@ def _clean_hospi_icu(covid):
 
 
 def clean(covid):
-    covid.scrapper()
+
     df_melt_apify = _clean_apify(covid)
     df_melt_hospi_icu = _clean_hospi_icu(covid)
 

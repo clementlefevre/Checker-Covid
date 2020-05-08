@@ -50,5 +50,7 @@ class COVID:
         return self.params["scrapper"](self)
 
     def cleaner(self):
+        if self.update:
+            self.scrapper()
 
         return self.params["cleaner"](self)

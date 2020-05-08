@@ -2,7 +2,7 @@ import warnings
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
-
+from datetime import date
 import pandas as pd
 
 from services.s3_bucket import get_current_latest_file_on_s3, upload_to_s3

@@ -8,10 +8,7 @@ from datetime import date, timedelta
 from ..translator import translate_and_select_cols
 
 
-def clean(covid, scrap=True):
-
-    if scrap:
-        covid.scrapper()
+def clean(covid):
 
     source_name = covid.params["url"]
     file_name = "AllgemeinDaten.csv"
@@ -21,7 +18,9 @@ def clean(covid, scrap=True):
 
     df_translated = translate_and_select_cols(df, covid)
     df_translated["updated_on"] = pd.to_datetime(df_translated["updated_on"]).dt.date
-    df_translated["date"] = pd.to_datetime(df_translated["date"]).dt.date
+    df_translated["date"] = pd.to_datetime(
+        df_translated["date"], format="%d.%m.%Y %H:%M:%S"
+    ).dt.date
 
     df_global = pd.melt(
         df_translated,
@@ -76,9 +75,9 @@ def clean(covid, scrap=True):
 
     df_melt.dropna(inplace=True)
 
-    df_autria_all = pd.concat([df_global, df_cases_melted, df_melt], axis=0)
+    df_austria_all = pd.concat([df_global, df_cases_melted, df_melt], axis=0)
 
-    df_autria_all = df_autria_all.drop_duplicates(["key", "date"], keep="last")
+    df_austria_all = df_austria_all.drop_duplicates(["key", "date"], keep="last")
 
-    df_autria_all["country"] = covid.country
-    return df_autria_all
+    df_austria_all["country"] = covid.country
+    return df_austria_all

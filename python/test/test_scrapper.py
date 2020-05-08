@@ -3,7 +3,7 @@ from services.covid import COVID
 
 
 def test_scrapper_AT():
-    covid = COVID("AT", update=True)
+    covid = COVID("AT", update=False)
     df = covid.cleaner()
     df
 
@@ -13,7 +13,7 @@ def test_scrapper_BE():
     df = covid.cleaner()
 
 
-def test_BE_apify():
+def test_BE_():
     covid = COVID("BE", update=True)
     df = covid.cleaner()
 
@@ -32,7 +32,13 @@ def test_DK():
     df
 
 
-def test_FI_hospi_icu():
+def test_EE():
+    covid = COVID("EE")
+    df = covid.cleaner()
+    df
+
+
+def test_FI():
     covid = COVID("FI")
     df = covid.cleaner()
     df
