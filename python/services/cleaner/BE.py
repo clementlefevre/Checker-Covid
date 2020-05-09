@@ -12,18 +12,36 @@ def _clean_excel(covid):
 
     filename = "COVID19BE.xlsx"
     source_file_path = f"{covid.data_path}/raw/{covid.dt_created}/{filename}"
+
+    ## HOSP
     df_hosp = pd.read_excel(source_file_path, sheet_name="HOSP", engine="openpyxl")
     df_hosp_group = df_hosp.groupby(["DATE"]).sum().reset_index()
     df_translated = translate_and_select_cols(df_hosp_group, covid)
 
     df_translated["date"] = pd.to_datetime(df_translated["date"]).dt.date
-    df_melt = pd.melt(
+    df_melt_hosp = pd.melt(
         df_translated,
         id_vars=["date"],
         value_vars=df_translated.columns.tolist().remove("date"),
         var_name="key",
         value_name="value",
     )
+
+    ## TEST
+    df_test = pd.read_excel(source_file_path, sheet_name="TESTS", engine="openpyxl")
+
+    df_translated = translate_and_select_cols(df_test, covid)
+
+    df_translated["date"] = pd.to_datetime(df_translated["date"]).dt.date
+    df_melt_test = pd.melt(
+        df_translated,
+        id_vars=["date"],
+        value_vars=df_translated.columns.tolist().remove("date"),
+        var_name="key",
+        value_name="value",
+    )
+
+    df_melt = pd.concat([df_melt_hosp, df_melt_test], axis=0)
 
     df_melt["updated_on"] = pd.to_datetime(covid.dt_created)
     df_melt["updated_on"] = df_melt["updated_on"].dt.date
@@ -64,7 +82,7 @@ def _clean_apify(covid):
 
 def clean(covid):
     df_excel = _clean_excel(covid)
-    df_apify = _clean_apify(covid)
+    df_apify = pd.DataFrame()  # _clean_apify(covid)
 
     df = pd.concat([df_excel, df_apify], axis=0)
     return df

@@ -175,7 +175,7 @@ SE,,intensiveCare,curr_icu
 SE,,Antal patienter:,cum_icu
 SE,,Tabellen är uppdaterad:,date
 BE,,infected,cases
-BE,,tested              ,tested
+BE,,TESTS,tested
 BE,,recovered,recovered
 BE,,deaths,dead
 BE,,totalInToHospital,new_hospi
