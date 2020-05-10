@@ -38,7 +38,8 @@ AT_apify,,recoveredByRegion,
 AT_apify,,testedByRegion,
 AT_apify,,icuByRegion,
 AT_apify,,hospitalizedByRegion,
-BE,,NR_REPORTING,cases
+BE,,CASES,cases
+BE,,NR_REPORTING,
 BE,,TOTAL_IN,curr_hospi
 BE,,TOTAL_IN_ICU,curr_icu
 BE,,TOTAL_IN_RESP,curr_respi
@@ -46,6 +47,19 @@ BE,,TOTAL_IN_ECMO,current_ecmo
 BE,,NEW_IN,new_hospi
 BE,,NEW_OUT,new_out
 BE,,DATE,date
+BE,,infected,
+BE,,TESTS,tested
+BE,,recovered,recovered
+BE,,deaths,dead
+BE,,totalInToHospital,new_hospi
+BE,,totalHospitalized,curr_hospi
+BE,,newlyOutOfHospital ,out_hospi
+BE,,country,
+BE,,historyData,
+BE,,sourceUrl,
+BE,,lastUpdatedAtApify,date
+BE,,lastUpdatedAtSource ,
+BE,,readMe,
 CH,,sourceUrl,
 CH,,lastUpdatedAtApify,date
 CH,,readMe,
@@ -76,6 +90,10 @@ DK,,deceased,dead
 DK,,sourceUrl,
 DK,,lastUpdatedAtApify,date
 DK,,recovered,cured
+DK,,Antal indlagte på sygehus i alt,curr_hospi
+DK,,Heraf indlagte på intensiv afd.,curr_icu
+DK,,Heraf indlagte på intensiv afd. og i respirator,curr_respi
+DK,,date,date
 EE,,Haiglas,curr_hospi
 EE,,Kriitilises seisundis (juhitaval hingamisel),curr_icu
 EE,,Haiglast väljasaanud,cum_out_hospi
@@ -135,6 +153,10 @@ IT,,tamponi,tested
 IT,,casi_testati,cum_tests
 IT,,note_it,
 IT,,note_en,
+IT,,denominazione_regione,region
+NL,,Positief geteste personen,cases
+NL,,Ziekenhuisopnames,cum_hospi
+NL,,date,date
 NO,,infected,cases
 NO,,infectedByRegion,
 NO,,sourceUrl,
@@ -174,24 +196,3 @@ SE,,deceased,dead
 SE,,intensiveCare,curr_icu
 SE,,Antal patienter:,cum_icu
 SE,,Tabellen är uppdaterad:,date
-BE,,infected,cases
-BE,,TESTS,tested
-BE,,recovered,recovered
-BE,,deaths,dead
-BE,,totalInToHospital,new_hospi
-BE,,totalHospitalized,curr_hospi
-BE,,newlyOutOfHospital ,out_hospi
-BE,,country,
-BE,,historyData,
-BE,,sourceUrl,
-BE,,lastUpdatedAtApify,date
-BE,,lastUpdatedAtSource ,
-BE,,readMe,
-IT,,denominazione_regione,region
-DK,,Antal indlagte på sygehus i alt,curr_hospi
-DK,,Heraf indlagte på intensiv afd.,curr_icu
-DK,,Heraf indlagte på intensiv afd. og i respirator,curr_respi
-DK,,date,date
-NL,,Positief geteste personen,cases
-NL,,Ziekenhuisopnames,cum_hospi
-NL,,date,date

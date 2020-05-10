@@ -13,6 +13,23 @@ def _clean_excel(covid):
     filename = "COVID19BE.xlsx"
     source_file_path = f"{covid.data_path}/raw/{covid.dt_created}/{filename}"
 
+    ## CASES
+    df_cases = pd.read_excel(
+        source_file_path, sheet_name="CASES_AGESEX", engine="openpyxl"
+    )
+    df_cases_group = df_cases[~df_cases["DATE"].isnull()].groupby(["DATE"]).sum()
+    df_cases_group["CASES"] = df_cases_group["CASES"].cumsum()
+    df_translated = translate_and_select_cols(df_cases_group.reset_index(), covid)
+
+    df_translated["date"] = pd.to_datetime(df_translated["date"]).dt.date
+    df_melt_cases = pd.melt(
+        df_translated,
+        id_vars=["date"],
+        value_vars=df_translated.columns.tolist().remove("date"),
+        var_name="key",
+        value_name="value",
+    )
+
     ## HOSP
     df_hosp = pd.read_excel(source_file_path, sheet_name="HOSP", engine="openpyxl")
     df_hosp_group = df_hosp.groupby(["DATE"]).sum().reset_index()
@@ -41,7 +58,7 @@ def _clean_excel(covid):
         value_name="value",
     )
 
-    df_melt = pd.concat([df_melt_hosp, df_melt_test], axis=0)
+    df_melt = pd.concat([df_melt_cases, df_melt_hosp, df_melt_test], axis=0)
 
     df_melt["updated_on"] = pd.to_datetime(covid.dt_created)
     df_melt["updated_on"] = df_melt["updated_on"].dt.date
