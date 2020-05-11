@@ -20,7 +20,7 @@ from services.cleaner import (
     OWID,
 )
 
-from services.scrapper import FI_scrap
+from services.scrapper import FI_scrap,ES_scrap
 
 
 HEADERS = {
@@ -79,8 +79,9 @@ countries_data = {
         "cleaner": DE.clean,
     },
     "ES": {
-        "url": "https://covid19.isciii.es/resources/serie_historica_acumulados.csv",
-        "scrapper": download_spain,
+        #"url": "https://covid19.isciii.es/resources/serie_historica_acumulados.csv",
+        "url_uclm":"https://covid19.esi.uclm.es/spain",
+        "scrapper": ES_scrap.download,
         "cleaner": ES.clean,
     },
     "IE": {
@@ -117,8 +118,9 @@ countries_data = {
         "cleaner": OWID.clean,
     },
     "PT": {
-        "url_pdf_1": "https://covid19.min-saude.pt/wp-content/uploads/2020/04/51_DGS_boletim_20200422.pdf",
-        "url_esri_1": "https://services.arcgis.com/CCZiGSEQbAxxFVh3/arcgis/rest/services/An%C3%A1lises_Extra_Covid/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=Data_do_Relat%C3%B3rio%20asc&resultOffset=0&resultRecordCount=32000&resultType=standard&cacheHint=true",
+        "url_esri_1":"https://services.arcgis.com/CCZiGSEQbAxxFVh3/arcgis/rest/services/An%C3%A1lises_Extra_Covid/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=Data_do_Relat%C3%B3rio%20asc&resultOffset=0&resultRecordCount=32000&resultType=standard&cacheHint=true",
+        "url_esri_2":"https://services.arcgis.com/CCZiGSEQbAxxFVh3/arcgis/rest/services/COVID19Portugal_view/FeatureServer/0/query?f=json&where=gr_etario_0_9%20IS%20NOT%20NULL&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=datarelatorio%20asc&resultOffset=0&resultRecordCount=32000&resultType=standard&cacheHint=true",
+
         "scrapper": download_portugal,
         "cleaner": PT.clean,
     },

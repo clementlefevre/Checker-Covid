@@ -25,7 +25,7 @@ def clean(covid):
     )
 
     df_melt["updated_on"] = pd.to_datetime(covid.dt_created)
-    df_melt["updated_on"] = df_melt["updated_on"].dt.date
+
     df_melt["source_url"] = covid.params["url_apify"]
     df_melt["filename"] = filename
     df_melt["country"] = covid.country

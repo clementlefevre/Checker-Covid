@@ -33,7 +33,7 @@ def clean(covid):
 
     df_melted["source_url"] = covid.params["url_rki"]
     df_melted["updated_on"] = pd.to_datetime(covid.dt_created)
-    df_melted["updated_on"] = df_melted["updated_on"].dt.date
+
     df_melted["filename"] = filename
     df_melted["country"] = covid.country
 

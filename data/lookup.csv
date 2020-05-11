@@ -1,4 +1,4 @@
-country,,original_field_name,tub_name
+country,option,original_field_name,tub_name
 AT,,AktuelleErkrankungen,
 AT,,PositivGetestet,cases
 AT,,Genesen,
@@ -12,32 +12,32 @@ AT,,GesIBBel,curr_icu
 AT,,BFNH,
 AT,,Erkrankungen,
 AT,,Timestamp,updated_on
-AT,Epikurve.csv,tägliche Erkrankungen,new_cases
-AT,Epikurve.csv,time,date
+AT,,tägliche Erkrankungen,new_cases
+AT,,time,date
 AT,,LetzteAktualisierung,date
-AT_apify,,totalTested,
-AT_apify,,totalCases,
-AT_apify,,totalDeaths,
-AT_apify,,infectedByRegion,
-AT_apify,,curedByRegion,
-AT_apify,,sourceUrl,
-AT_apify,,lastUpdatedAtSource,
-AT_apify,,lastUpdatedAtApify,date
-AT_apify,,readMe,
-AT_apify,,deathByRegion,
-AT_apify,,infected,
-AT_apify,,deceased,dead
-AT_apify,,deceasedByRegion,
-AT_apify,,recovered,recovered
-AT_apify,,tested,tested
-AT_apify,,hospitalizationData,
-AT_apify,,totalIcu,curr_icu
-AT_apify,,totalHospitalized,curr_hospi
-AT_apify,,lastudpatedAtSource,
-AT_apify,,recoveredByRegion,
-AT_apify,,testedByRegion,
-AT_apify,,icuByRegion,
-AT_apify,,hospitalizedByRegion,
+AT,apify,totalTested,
+AT,apify,totalCases,
+AT,apify,totalDeaths,
+AT,apify,infectedByRegion,
+AT,apify,curedByRegion,
+AT,apify,sourceUrl,
+AT,apify,lastUpdatedAtSource,
+AT,apify,lastUpdatedAtApify,date
+AT,apify,readMe,
+AT,apify,deathByRegion,
+AT,apify,infected,
+AT,apify,deceased,dead
+AT,apify,deceasedByRegion,
+AT,apify,recovered,recovered
+AT,apify,tested,tested
+AT,apify,hospitalizationData,
+AT,apify,totalIcu,curr_icu
+AT,apify,totalHospitalized,curr_hospi
+AT,apify,lastudpatedAtSource,
+AT,apify,recoveredByRegion,
+AT,apify,testedByRegion,
+AT,apify,icuByRegion,
+AT,apify,hospitalizedByRegion,
 BE,,CASES,cases
 BE,,NR_REPORTING,
 BE,,TOTAL_IN,curr_hospi
@@ -173,20 +173,14 @@ OWID,,new_tests,new_tested
 OWID,,tests_units,tests_unit
 OWID,,alpha2,country
 OWID,,date,date
-PT,,Data_do_Relatório,date
-PT,,Confirmados,curr_cases
-PT,,ConfirmadosEvo,
-PT,,Recuperados,curr_cured
-PT,,RecuperadosEvo,
-PT,,Óbitos,curr_dead
-PT,,ÓbitosEvo,
-PT,,Suspeitos,
-PT,,SuspeitosEvo,
-PT,,Total_de_Casos_Não_confirmados,
-PT,,AguardamResultado,
-PT,,Amostras,cum_tests
-PT,,Amostras_Novas,cum_tests
-PT,,Casos_Novos,new_cases
+PT,url_2,datarelatorio,date
+PT,url_1,Data_do_Relatório,date
+PT,url_2,casosconfirmados,cases
+PT,url_2,recuperados,curr_cured
+PT,url_1,Óbitos,curr_dead
+PT,url_1,Amostras,cum_tests
+PT,url_1,Amostras_Novas,tested
+PT,url_1,Casos_Novos,new_cases
 SE,,infected,cases
 SE,,infectedByRegion,
 SE,,sourceUrl,
@@ -196,3 +190,12 @@ SE,,deceased,dead
 SE,,intensiveCare,curr_icu
 SE,,Antal patienter:,cum_icu
 SE,,Tabellen är uppdaterad:,date
+PT,url_2,CasosInternados,curr_hospi
+PT,url_2,CasosInternadosUCI,curr_icu
+ES,uclm,Total cases,cases
+ES,uclm,Active cases,curr_cases
+ES,uclm,Hospitalized,curr_hospi
+ES,uclm,Critical (ICU),curr_icu
+ES,uclm,Total Recoveries,total_recoveries
+ES,uclm,Total Deaths,total_deaths
+ES,uclm,date,date

@@ -11,7 +11,7 @@ from ..translator import translate_and_select_cols
 def _clean_excel(covid):
 
     filename = "COVID19BE.xlsx"
-    source_file_path = f"{covid.data_path}/raw/{covid.dt_created}/{filename}"
+    source_file_path = f"{covid.path_to_save}/{filename}"
 
     ## CASES
     df_cases = pd.read_excel(
@@ -61,7 +61,7 @@ def _clean_excel(covid):
     df_melt = pd.concat([df_melt_cases, df_melt_hosp, df_melt_test], axis=0)
 
     df_melt["updated_on"] = pd.to_datetime(covid.dt_created)
-    df_melt["updated_on"] = df_melt["updated_on"].dt.date
+
     df_melt["source_url"] = covid.params["url"]
     df_melt["filename"] = filename
     df_melt["country"] = covid.country

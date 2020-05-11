@@ -20,6 +20,18 @@ def test_BE_():
     df
 
 
+def test_ES_scrapper():
+    covid = COVID("ES", update=True)
+    covid.scrapper()
+
+
+def test_ES_cleaner():
+    covid = COVID("ES", update=False)
+    df = covid.cleaner()
+
+    df
+
+
 def test_IT_regions():
     covid = COVID("IT")
     df = covid.cleaner()

@@ -35,7 +35,7 @@ def clean(covid):
 
     df_melt["source_url"] = covid.params["url"]
     df_melt["updated_on"] = pd.to_datetime(covid.dt_created)
-    df_melt["updated_on"] = df_melt["updated_on"].dt.date
+
     df_melt["filename"] = filename
 
     return df_melt

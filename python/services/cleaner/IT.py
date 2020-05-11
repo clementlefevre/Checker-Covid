@@ -34,7 +34,7 @@ def _clean_country(covid):
     )
 
     df_melted["updated_on"] = pd.to_datetime(covid.dt_created)
-    df_melted["updated_on"] = df_melted["updated_on"].dt.date
+
     df_melted["filename"] = filename
     df_melted["country"] = covid.country
     df_melted["source_url"] = covid.params["url"]
@@ -74,7 +74,7 @@ def _clean_regions(covid):
     )
 
     df_melted["updated_on"] = pd.to_datetime(covid.dt_created)
-    df_melted["updated_on"] = df_melted["updated_on"].dt.date
+
     df_melted["filename"] = filename
     df_melted["country"] = df_melted["region"]
     df_melted["source_url"] = covid.params["url"]

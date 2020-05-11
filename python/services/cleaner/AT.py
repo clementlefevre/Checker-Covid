@@ -12,12 +12,10 @@ def clean(covid):
 
     source_name = covid.params["url"]
     file_name = "AllgemeinDaten.csv"
-    df = pd.read_csv(
-        f"{covid.data_path}/raw/{covid.dt_created}/AllgemeinDaten.csv", sep=";"
-    )
+    df = pd.read_csv(f"{covid.path_to_save}/AllgemeinDaten.csv", sep=";")
 
     df_translated = translate_and_select_cols(df, covid)
-    df_translated["updated_on"] = pd.to_datetime(df_translated["updated_on"]).dt.date
+    df_translated["updated_on"] = pd.to_datetime(df_translated["updated_on"])
     df_translated["date"] = pd.to_datetime(
         df_translated["date"], format="%d.%m.%Y %H:%M:%S"
     ).dt.date
@@ -55,7 +53,7 @@ def clean(covid):
     filename = "total.csv"
     df = pd.read_csv(f"{covid.path_to_save}/{filename}")
 
-    df_translated = translate_and_select_cols(df, covid, "_apify")
+    df_translated = translate_and_select_cols(df, covid, "apify")
 
     df_translated.date = pd.to_datetime(df_translated.date).dt.date
 
@@ -68,7 +66,7 @@ def clean(covid):
     )
 
     df_melt["updated_on"] = pd.to_datetime(covid.dt_created)
-    df_melt["updated_on"] = df_melt["updated_on"].dt.date
+
     df_melt["source_url"] = covid.params["url_apify"]
     df_melt["filename"] = filename
     df_melt["country"] = covid.country

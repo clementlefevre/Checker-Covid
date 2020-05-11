@@ -25,7 +25,7 @@ def clean(covid):
 
     df_melted["source_url"] = covid.params["url_icu"]
     df_melted["updated_on"] = pd.to_datetime(covid.dt_created)
-    df_melted["updated_on"] = df_melted["updated_on"].dt.date
+
     df_melted["filename"] = filename
     df_melted["country"] = covid.country
 
@@ -45,7 +45,7 @@ def clean(covid):
     )
 
     df_melt_rivm["updated_on"] = pd.to_datetime(covid.dt_created)
-    df_melt_rivm["updated_on"] = df_melt_rivm["updated_on"].dt.date
+
     df_melt_rivm["source_url"] = covid.params["url_rivm"]
     df_melt_rivm["filename"] = filename
     df_melt_rivm["country"] = covid.country

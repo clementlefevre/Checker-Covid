@@ -10,6 +10,8 @@ file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../..", "da
 
 
 df_lookup = pd.read_csv(f"{file_path}/lookup.csv", sep=",")
+df_lookup["option"].fillna("", inplace=True)
+df_lookup["country_option"] = df_lookup["country"] + "_" + df_lookup["option"]
 
 
 def translate_and_select_cols(df, covid, option=""):
@@ -17,7 +19,7 @@ def translate_and_select_cols(df, covid, option=""):
     df_cols.columns = ["original_field_name"]
     df_cols = pd.merge(
         df_cols,
-        df_lookup[df_lookup["country"] == covid.country + option],
+        df_lookup[df_lookup["country_option"] == covid.country + "_" + option],
         on="original_field_name",
     )
     df_cols = df_cols[~df_cols["tub_name"].isnull()]

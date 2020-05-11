@@ -30,12 +30,13 @@ class COVID:
         self,
         country,
         update=True,
-        dt_created=datetime.now().strftime("%Y-%m-%d"),
+        dt_created=datetime.now(),  # .strftime("%Y-%m-%d"),
         data={},
     ):
         self.country = country
         self.update = update
         self.dt_created = dt_created
+        self.dt_created_date_str = self.dt_created.strftime("%Y-%m-%d")
         self.data = {}
         self.params = COUNTRIES[country]
         self.countries_list = COUNTRIES.keys()
@@ -43,7 +44,7 @@ class COVID:
         self.data_path = f"{file_path}/countries/{country}"
         self.HEADERS = HEADERS
         create_folder()
-        self.path_to_save = f"{self.data_path}/raw/{self.dt_created}"
+        self.path_to_save = f"{self.data_path}/raw/{self.dt_created_date_str}"
         Path(self.path_to_save).mkdir(parents=True, exist_ok=True)
 
     def scrapper(self):

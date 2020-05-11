@@ -48,10 +48,10 @@ COLS_FOR_TABLE <- c(
 )
 
 
-
 loadData <-  function() {
   print("LOADING DATA FROM S3...")
   DT <-  fread('https://checkercovid.s3.amazonaws.com/all_EU.csv')
+  #DT <-  fread('https://checkercovid.s3.amazonaws.com/all_EU_20200508_10:45:35.csv')
   #DT <- fread("../../data/cleaned_data_archives/all_EU.csv")
   
   DT$date <- ymd(DT$date)
@@ -61,6 +61,7 @@ loadData <-  function() {
   DT <-  unique(DT, by = c("date", "country", "key"))
   DT <-  DT[date<=Sys.Date()]
   DT <- DT[order(date)]
+  DT$updated_on <-  ymd_hms(DT$updated_on)
   
   DT$key <- factor(DT$key, levels = COLS_FOR_TABLE)
   return(DT)
