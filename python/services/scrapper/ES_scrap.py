@@ -79,6 +79,6 @@ def download(covid):
     for p in provinces_links:
         df_province = get_province_data(covid, p)
         df = pd.concat([df, df_province], axis=0)
-        time.sleep(3)
+        # time.sleep(3)
 
     df.to_csv(f"{covid.path_to_save}/total_uclm.csv", index=False)
