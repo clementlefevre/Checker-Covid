@@ -56,4 +56,3 @@ def clean(covid):
 
     return df
 
-    return df

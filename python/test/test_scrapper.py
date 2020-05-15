@@ -60,3 +60,17 @@ def test_NL():
     covid = COVID("NL")
     df = covid.cleaner()
     df
+
+
+def test_NL_scrapper():
+    from services.scrapper import NL_scrap
+
+    covid = COVID("NL")
+    NL_scrap.download_netherland(covid)
+
+
+def test_SE():
+    from services.country_scrappers import download_sweden
+
+    covid = COVID("SE")
+    download_sweden(covid)

@@ -20,7 +20,7 @@ from services.cleaner import (
     OWID,
 )
 
-from services.scrapper import FI_scrap,ES_scrap
+from services.scrapper import FI_scrap,ES_scrap,NL_scrap
 
 
 HEADERS = {
@@ -103,7 +103,7 @@ countries_data = {
         "url_ic_cumulative": "https://www.stichting-nice.nl/covid-19/public/intake-cumulative/",
         "url_actuel": "https://www.rivm.nl/coronavirus-covid-19/actueel",
         "url_rivm" :"https://www.rivm.nl/coronavirus-covid-19/actueel",
-        "scrapper": download_netherland,
+        "scrapper": NL_scrap.download_netherland,
         "cleaner": NL.clean,
     },
     "NO": {

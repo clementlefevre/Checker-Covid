@@ -63,6 +63,14 @@ loadData <-  function() {
   DT <- DT[order(date)]
   DT$updated_on <-  ymd_hms(DT$updated_on)
   
+  DT <-  DT[, .SD[.N], by=c('date','key','country')] 
+  
+  
+  # we add the columns that are not un the COLS_FOR_TABLE avoid NA by setting factor on key :
+  missing.cols <- setdiff(unique(DT$key), COLS_FOR_TABLE)
+  
+  COLS_FOR_TABLE <- c(COLS_FOR_TABLE, missing.cols)
+  
   DT$key <- factor(DT$key, levels = COLS_FOR_TABLE)
   return(DT)
   
@@ -89,6 +97,7 @@ castTable <-  function(DT, for.download = FALSE) {
         DT,
         date + country ~ key,
         fill = "no data",
+        
         value.var = c('value', 'source_url', 'updated_on')
       )[order(-date)]
     
