@@ -17,14 +17,12 @@ def update_current_s3d_dataset(df_new):
     :type df_new: pd.DataFrame
     """
 
-    df_new["updated_on"] = pd.to_datetime(df_new["updated_on"])  # .dt.date
+    df_new["updated_on"] = pd.to_datetime(df_new["updated_on"])
 
     df_current_s3 = get_current_latest_file_on_s3()
 
     if df_current_s3.shape[0] > 0:
-        df_current_s3["updated_on"] = pd.to_datetime(
-            df_current_s3["updated_on"]
-        )  # .dt.date
+        df_current_s3["updated_on"] = pd.to_datetime(df_current_s3["updated_on"])
         df_current_s3["date"] = pd.to_datetime(df_current_s3["date"]).dt.date
 
         df_concat = pd.concat([df_current_s3, df_new], axis=0, ignore_index=True)
