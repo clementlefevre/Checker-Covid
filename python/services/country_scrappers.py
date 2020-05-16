@@ -3,7 +3,9 @@ import warnings
 warnings.simplefilter(action="ignore", category=FutureWarning)
 import logging
 
-logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(logging.ERROR)
+logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(
+    logging.ERROR
+)
 
 
 import requests
@@ -103,9 +105,8 @@ def download_estonia(covid):
 
 
 # could not find total cases
-def download_france_total(covid, url_dept, url_values, field):
+def download_france_total(covid, url_values, field):
 
-    date = datetime.now().strftime("%Y-%m-%d")
     url_values = url_values + datetime.now().strftime("%Y-%m-%d")
 
     response_values = requests.get(url_values, headers=headers)
@@ -116,21 +117,21 @@ def download_france_total(covid, url_dept, url_values, field):
     else:
         df = df[df.clage_covid == "0"].groupby("jour").sum().reset_index()
 
+    if field == "hospitalized":
+        df["cum_hospi"] = df["hosp"].cumsum()
+
     df.to_csv(f"{covid.path_to_save}/total_{field}.csv")
 
 
 def download_france(covid):
     download_france_total(
-        covid, covid.params["url_icu_dept"], covid.params["url_icu_values"], "icu"
+        covid, covid.params["url_icu_values"], "icu",
     )
     download_france_total(
-        covid,
-        covid.params["url_hospitalized_dept"],
-        covid.params["url_hospitalized_values"],
-        "hospitalized",
+        covid, covid.params["url_hospitalized_values"], "hospitalized",
     )
     download_france_total(
-        covid, covid.params["url_test_dept"], covid.params["url_test_values"], "test"
+        covid, covid.params["url_test_values"], "test",
     )
 
 
