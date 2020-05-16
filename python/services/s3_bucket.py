@@ -5,6 +5,7 @@ from datetime import datetime
 import pandas as pd
 from collections import namedtuple
 import boto3
+import logging
 
 file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../..", "data"))
 
@@ -35,7 +36,7 @@ def get_current_latest_file_on_s3():
         df = pd.read_csv(
             f"https://checkercovid.s3.amazonaws.com/{file_name}", index_col=False
         )
-    except Exception as e:
+    except Exception:
         logging.error(f"{file_name} not found in bucket ! ")
     return df
 

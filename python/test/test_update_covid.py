@@ -1,16 +1,13 @@
 import warnings
 
-warnings.simplefilter(action="ignore", category=FutureWarning)
-
-
-from datetime import datetime
-import pandas as pd
-import boto3
 
 from services.update_covid import update_all
 from services.s3_bucket import get_current_latest_file_on_s3
 
 import logging
+
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
 def test_full_update(caplog):

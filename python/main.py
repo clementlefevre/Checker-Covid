@@ -7,7 +7,7 @@ from services import update_covid
 
 logging.basicConfig(
     filename="covid.log",
-    level=logging.DEBUG,
+    level=logging.INFO,
     format="%(asctime)s:%(levelname)s:%(message)s",
 )
 

@@ -3,7 +3,7 @@ from services.covid import COVID
 
 
 def test_scrapper_AT():
-    covid = COVID("AT", update=False)
+    covid = COVID("AT", update=True)
     df = covid.cleaner()
     df
 
@@ -69,8 +69,14 @@ def test_NL_scrapper():
     NL_scrap.download_netherland(covid)
 
 
-def test_SE():
+def test_SE_scrapper():
     from services.country_scrappers import download_sweden
 
     covid = COVID("SE")
     download_sweden(covid)
+
+
+def test_SE():
+    covid = COVID("SE")
+    df = covid.cleaner()
+    df

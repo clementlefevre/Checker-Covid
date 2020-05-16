@@ -34,8 +34,10 @@ def clean(covid):
     filename = "Epikurve.csv"
     df_cases = pd.read_csv(f"{covid.path_to_save}/{filename}", sep=";")
     df_cases = translate_and_select_cols(df_cases, covid)
-    df_cases["updated_on"] = pd.to_datetime(df_cases["updated_on"]).dt.date
-    df_cases["date"] = pd.to_datetime(df_cases["date"], format="%d.%m.%Y").dt.date
+    df_cases["updated_on"] = df_cases["updated_on"].apply(pd.Timestamp)
+    df_cases["date"] = pd.to_datetime(
+        df_cases["date"], format="%d.%m.%Y"
+    ).dt.date
 
     df_cases_melted = pd.melt(
         df_cases,
@@ -75,7 +77,9 @@ def clean(covid):
 
     df_austria_all = pd.concat([df_global, df_cases_melted, df_melt], axis=0)
 
-    df_austria_all = df_austria_all.drop_duplicates(["key", "date"], keep="last")
+    df_austria_all = df_austria_all.drop_duplicates(
+        ["key", "date"], keep="last"
+    )
 
     df_austria_all["country"] = covid.country
     return df_austria_all

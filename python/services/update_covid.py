@@ -13,7 +13,9 @@ urllib3_log.setLevel(logging.CRITICAL)
 
 import os
 
-file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../..", "data"))
+file_path = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../..", "data")
+)
 
 from config import COUNTRIES
 from services.covid import COVID
@@ -45,7 +47,9 @@ def update_all(spec_countries=None):
     logging.info(f"merging data with TSP POP...")
 
     df_pop = pd.read_csv(f"{file_path}/tps00001_1_Data.csv", encoding="utf-8")
-    df_pop = df_pop[df_pop["TIME"] == df_pop.TIME.max()][["TIME", "GEO", "Value"]]
+    df_pop = df_pop[df_pop["TIME"] == df_pop.TIME.max()][
+        ["TIME", "GEO", "Value"]
+    ]
     df_pop.columns = ["TIME", "alpha2", "pop_2019"]
 
     df = pd.DataFrame()
