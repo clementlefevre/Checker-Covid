@@ -37,8 +37,10 @@ def update_all(spec_countries=None):
             ALL_EU.append(covid.cleaner())
             logging.info(f"{c}: cleaned.")
         except Exception as e:
-            logging.error("Something went wrong...")
-            logging.exception(e)
+            logging.exception(
+                f"Something went wrong during the scraping of country : {c}"
+            )
+            logging.critical(e, exc_info=True)
 
     logging.info(f"merging data with TSP POP...")
 

@@ -11,8 +11,7 @@ logging.basicConfig(
     format="%(asctime)s:%(levelname)s:%(message)s",
 )
 
-logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(logging.ERROR)
-
+logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(logging.ERROR)
 
 
 def job():
@@ -22,8 +21,9 @@ def job():
         update_covid.update_all()
         logging.info("Job finished")
     except Exception as e:
-        logging.error("Something went wrong...")
-        logging.error(e)
+        logging.error("Something went wrong during the job execution :")
+        logging.exception(e)
+        logging.critical(e, exc_info=True)
 
 
 schedule.every().hour.do(job)
