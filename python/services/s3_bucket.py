@@ -34,11 +34,11 @@ def get_current_latest_file_on_s3():
         file_name = latest_file.iloc[0].key
         df = pd.read_csv(f"https://checkercovid.s3.amazonaws.com/{file_name}")
     except Exception as e:
-        logging.error(f"{filename} not found in bucket ! ")
+        logging.error(f"{file_name} not found in bucket ! ")
     return df
 
 
-def upload_to_s3(updated_df, new_df):
+def upload_to_s3(updated_df, new_df, has_error=False):
     """[summary]
 
     [extended_summary]
@@ -48,18 +48,24 @@ def upload_to_s3(updated_df, new_df):
 
     # Upload a new file adn add archive version :
     now = datetime.now()  # current date and time
-    filename_archive_s3 = f'all_EU_{now.strftime("%Y%m%d_%H:%M:%S")}.csv'
+
+    error_tag = "_error" if has_error else ""
+
+    filename_archive_s3 = f'all_EU_{now.strftime("%Y%m%d_%H:%M:%S")}{error_tag}.csv'
+    filename_all_EU = f"all_EU{error_tag}.csv"
 
     # store locally
     new_df.to_csv(
         f"{file_path}/cleaned_data_archives/{filename_archive_s3}", index=False
     )
-    updated_df.to_csv(f"{file_path}/cleaned_data_archives/all_EU.csv", index=False)
+    updated_df.to_csv(
+        f"{file_path}/cleaned_data_archives/{filename_all_EU}", index=False
+    )
 
     # upload cleaned df to s3
     data = open(f"{file_path}/cleaned_data_archives/{filename_archive_s3}", "rb")
     s3.Bucket("checkercovid").put_object(Key=filename_archive_s3, Body=data)
 
     # upload latest to s3
-    data = open(f"{file_path}/cleaned_data_archives/all_EU.csv", "rb")
+    data = open(f"{file_path}/cleaned_data_archives/{filename_all_EU}", "rb")
     s3.Bucket("checkercovid").put_object(Key="all_EU.csv", Body=data)
