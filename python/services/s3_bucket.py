@@ -32,7 +32,9 @@ def get_current_latest_file_on_s3():
         df_s3 = _retrieve_current_data_on_s3()
         latest_file = df_s3[df_s3.last_date == df_s3.last_date.max()]
         file_name = latest_file.iloc[0].key
-        df = pd.read_csv(f"https://checkercovid.s3.amazonaws.com/{file_name}")
+        df = pd.read_csv(
+            f"https://checkercovid.s3.amazonaws.com/{file_name}", index_col=False
+        )
     except Exception as e:
         logging.error(f"{file_name} not found in bucket ! ")
     return df
