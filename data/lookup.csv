@@ -105,6 +105,7 @@ EE,,Kokku testituid,cum_tested
 EE,,Teste päevas,curr_tested
 EE,,date,date
 EE,,Kokku positiivselt testituid,cases
+EE,,Kriitilises seisundis (juhitaval hingamisel),curr_respi
 ES,,CCAA,area
 ES,,FECHA,date
 ES,,CASOS,
@@ -115,6 +116,13 @@ ES,,UCI,curr_icu
 ES,,Fallecidos,curr_dead
 ES,,Recuperados,curr_cured
 ES,,diff_PCR+,new_cases
+ES,uclm,Total cases,cases
+ES,uclm,Active cases,curr_cases
+ES,uclm,Hospitalized,curr_hospi
+ES,uclm,Critical (ICU),curr_icu
+ES,uclm,Total Recoveries,total_recoveries
+ES,uclm,Total Deaths,total_deaths
+ES,uclm,date,date
 FI,,sourceUrl,
 FI,,lastUpdatedAtApify,
 FI,,readMe,
@@ -129,6 +137,7 @@ FR,,jour,date
 FR,,sexe,sex
 FR,,rea,curr_icu
 FR,,nb_test,tested
+FR,,cum_hospi,cum_hospi
 IE,,TotalConfirmedCovidCases,cases
 IE,,HospitalisedCovidCases,curr_hospi
 IE,,RequiringICUCovidCases,curr_icu
@@ -181,6 +190,8 @@ PT,url_1,Óbitos,curr_dead
 PT,url_1,Amostras,cum_tests
 PT,url_1,Amostras_Novas,tested
 PT,url_1,Casos_Novos,new_cases
+PT,url_2,CasosInternados,curr_hospi
+PT,url_2,CasosInternadosUCI,curr_icu
 SE,,infected,cases
 SE,,infectedByRegion,
 SE,,sourceUrl,
@@ -190,12 +201,3 @@ SE,,deceased,dead
 SE,,intensiveCare,curr_icu
 SE,,Antal patienter:,cum_icu
 SE,,Tabellen är uppdaterad:,date
-PT,url_2,CasosInternados,curr_hospi
-PT,url_2,CasosInternadosUCI,curr_icu
-ES,uclm,Total cases,cases
-ES,uclm,Active cases,curr_cases
-ES,uclm,Hospitalized,curr_hospi
-ES,uclm,Critical (ICU),curr_icu
-ES,uclm,Total Recoveries,total_recoveries
-ES,uclm,Total Deaths,total_deaths
-ES,uclm,date,date
