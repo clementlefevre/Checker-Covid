@@ -7,6 +7,16 @@ from services.s3_bucket import get_current_latest_file_on_s3, upload_to_s3
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
+cols_of_scope = [
+    "country",
+    "date",
+    "key",
+    "updated_on",
+    "value",
+    "source_url",
+    "filename",
+]
+
 
 def filter_on_latest_update(df):
     """we drop the duplicates after having converted the data to datetime and the
@@ -25,11 +35,11 @@ def filter_on_latest_update(df):
     df_clean = (
         df.sort_values("updated_on")
         .groupby(["country", "date", "key"])
-        .last()
-        .reset_index()
+        .tail(1)
+        # .reset_index()
     )
 
-    return df_clean
+    return df_clean[cols_of_scope]
 
 
 def update_current_s3d_dataset(df_new):
@@ -44,7 +54,7 @@ def update_current_s3d_dataset(df_new):
     has_error = True
 
     # df_new["updated_on"] = pd.to_datetime(df_new["updated_on"])
-
+    df_new_clean = filter_on_latest_update(df_new)
     df_current_s3 = get_current_latest_file_on_s3()
 
     if df_current_s3.shape[0] > 0:
@@ -53,28 +63,23 @@ def update_current_s3d_dataset(df_new):
         # df = df.loc[~df.index.duplicated(keep='first')]
         try:
             df_current_s3_clean = filter_on_latest_update(df_current_s3)
-            df_new_clean = filter_on_latest_update(df_new)
 
             df_concat = pd.concat(
                 [df_current_s3_clean, df_new_clean], axis=0, ignore_index=True
             )
-            df_updated = (
-                df_concat.sort_values("updated_on")
-                .groupby(["country", "date", "key"])
-                .last()
-                .reset_index()
-            )
+            df_updated = filter_on_latest_update(df_concat)
+
             has_error = False
         except Exception:
+
             logging.exception(
                 "Failure while concatening current dataset with new one:"
             )
     else:
+
         df_updated = df_new_clean
         has_error = False
 
-    df_updated = df_updated[
-        [col for col in df_updated.columns if "Unnamed" not in col]
-    ]
+    # df_updated = df_updated[cols_of_scope]
 
     upload_to_s3(df_updated, df_new_clean, has_error)

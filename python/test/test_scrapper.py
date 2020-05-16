@@ -56,6 +56,12 @@ def test_FI():
     df
 
 
+def test_FR():
+    covid = COVID("FR")
+    df = covid.cleaner()
+    df
+
+
 def test_NL():
     covid = COVID("NL")
     df = covid.cleaner()

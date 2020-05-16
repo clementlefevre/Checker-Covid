@@ -53,7 +53,9 @@ def clean(covid):
     df_test_melted["source_url"] = covid.params["url_test_values"]
     df_test_melted["filename"] = filename_tests
 
-    df_france = pd.concat([df_hosp_melted, df_icu_melted, df_test_melted], axis=0)
+    df_france = pd.concat(
+        [df_hosp_melted, df_icu_melted, df_test_melted], axis=0
+    )
     df_france["updated_on"] = pd.to_datetime(covid.dt_created)
 
     df_france["country"] = covid.country

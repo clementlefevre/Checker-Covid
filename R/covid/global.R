@@ -48,41 +48,43 @@ COLS_FOR_TABLE <- c(
 )
 
 
-loadData <-  function() {
+loadData <- function() {
   print("LOADING DATA FROM S3...")
-  DT <-  fread('https://checkercovid.s3.amazonaws.com/all_EU.csv')
-  #DT <-  fread('https://checkercovid.s3.amazonaws.com/all_EU_20200508_10:45:35.csv')
-  #DT <- fread("../../data/cleaned_data_archives/all_EU.csv")
+  DT <- fread("https://checkercovid.s3.amazonaws.com/all_EU.csv.gz")
   
   DT$date <- ymd(DT$date)
+  DT$updated_on <-  ymd_hms(DT$updated_on)
   DT$value <-  as.numeric(DT$value)
   DT <-  DT[!is.na(value)]
   DT <-  DT[!is.na(key)]
-  DT <-  unique(DT, by = c("date", "country", "key"))
+  
+  DT <-  unique(DT, by = c("date", "country", "key","updated_on"))
   DT <-  DT[date<=Sys.Date()]
-  DT <- DT[order(date)]
-  DT$updated_on <-  ymd_hms(DT$updated_on)
+  DT <- DT[order(updated_on)]
   
   DT <-  DT[, .SD[.N], by=c('date','key','country')] 
-  
-  
+  DT <- DT[order(date)]
+
+
   # we add the columns that are not un the COLS_FOR_TABLE avoid NA by setting factor on key :
   missing.cols <- setdiff(unique(DT$key), COLS_FOR_TABLE)
-  
+
   COLS_FOR_TABLE <- c(COLS_FOR_TABLE, missing.cols)
-  
+
   DT$key <- factor(DT$key, levels = COLS_FOR_TABLE)
-  return(DT)
   
+  DT.pop <-  fread('data/populations.csv')
+  DT <-  merge(DT,DT.pop,by.x='country',by.y='geo')
+  return(DT)
 }
 
 
-DT <-  loadData()
+DT <- loadData()
 
 
-country.list <-  unique(DT$country) %>% sort()
-dates.list <-   unique(DT$date) %>% sort(decreasing = TRUE)
-keys.list <-  unique(DT$key) %>% sort()
+country.list <- unique(DT$country) %>% sort()
+dates.list <- unique(DT$date) %>% sort(decreasing = TRUE)
+keys.list <- unique(DT$key) %>% sort()
 
 dates.list.labels <- dates.list %>% format(., format = "%d.%m.%Y")
 dates.named.list <-
@@ -90,30 +92,27 @@ dates.named.list <-
 
 
 
-castTable <-  function(DT, for.download = FALSE) {
+castTable <- function(DT, for.download = FALSE) {
   if (for.download == TRUE) {
     DT.casted <-
       dcast(
         DT,
         date + country ~ key,
         fill = "no data",
-        
-        value.var = c('value', 'source_url', 'updated_on')
+
+        value.var = c("value", "source_url", "updated_on")
       )[order(-date)]
-    
-    
-  } else{
-    
+  } else {
     DT.casted <-
       dcast(
         DT,
         date + country + updated_on ~ key,
         fill = "no data",
-        value.var = c('value')
+        value.var = c("value")
       )[order(-date)]
   }
-  
-  return (DT.casted)
+
+  return(DT.casted)
 }
 
 

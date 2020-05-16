@@ -1,12 +1,12 @@
 import warnings
 
-warnings.simplefilter(action="ignore", category=FutureWarning)
 
 import pandas as pd
-from datetime import date, timedelta
 from iso3166 import countries
 
 from ..translator import translate_and_select_cols
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
 def clean(covid):
@@ -15,7 +15,9 @@ def clean(covid):
     df = pd.read_csv(f"{covid.path_to_save}/{filename}")
 
     all_countries = pd.DataFrame([c for c in countries])
-    euro_countries = all_countries[all_countries.alpha2.isin(covid.countries_list)]
+    euro_countries = all_countries[
+        all_countries.alpha2.isin(covid.countries_list)
+    ]
 
     df = pd.merge(df, euro_countries, left_on="iso_code", right_on="alpha3")
 
