@@ -3,7 +3,6 @@ import os
 from config import COUNTRIES, HEADERS
 from datetime import datetime
 from pathlib import Path
-from fake_useragent import UserAgent
 from services.country_scrappers import *
 import logging
 
@@ -36,8 +35,7 @@ class COVID:
         self.params = COUNTRIES[country]
         self.countries_list = COUNTRIES.keys()
 
-        ua = UserAgent()
-        self.header = {"User-Agent": str(ua.random)}
+        self.header = HEADERS
 
         self.data_path = f"{file_path}/countries/{country}"
         self.HEADERS = HEADERS
