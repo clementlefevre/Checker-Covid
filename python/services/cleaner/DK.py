@@ -61,10 +61,48 @@ def _clean_sst(covid):
     return df_melt
 
 
+def _clean_sst_hospi(covid):
+    filename = "current_sst_hospi.csv"
+
+    df = pd.read_csv(
+        f"{covid.path_to_save}/{filename}", encoding="utf-8", thousands="."
+    )
+
+    df = df[df["Aldersgruppe"] == "I alt"][["Indlagte i alt", "date"]]
+    df.columns = ["value", "date"]
+    df["key"] = "cum_hospi"
+    df["updated_on"] = pd.to_datetime(covid.dt_created)
+    df["source_url"] = covid.params["url_sst_dk"]
+    df["filename"] = filename
+    df["country"] = covid.country
+
+    return df
+
+
+def _clean_sst_icu(covid):
+    filename = "current_sst_icu.csv"
+
+    df = pd.read_csv(
+        f"{covid.path_to_save}/{filename}", encoding="utf-8", thousands="."
+    )
+
+    df = df[df["Alders gruppe"] == "I alt"][["Indlagte i alt", "date"]]
+    df.columns = ["value", "date"]
+    df["key"] = "cum_icu"
+    df["updated_on"] = pd.to_datetime(covid.dt_created)
+    df["source_url"] = covid.params["url_sst_dk"]
+    df["filename"] = filename
+    df["country"] = covid.country
+
+    return df
+
+
 def clean(covid):
-
     df_melt_apify = _clean_apify(covid)
-
     df_melt_sst = _clean_sst(covid)
+    df_sst_cum_hospi = _clean_sst_hospi(covid)
+    df_sst_cum_icu = _clean_sst_icu(covid)
 
-    return pd.concat([df_melt_apify, df_melt_sst], axis=0)
+    return pd.concat(
+        [df_melt_apify, df_melt_sst, df_sst_cum_hospi, df_sst_cum_icu], axis=0
+    )

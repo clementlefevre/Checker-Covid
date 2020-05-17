@@ -93,6 +93,7 @@ DK,,recovered,cured
 DK,,Antal indlagte på sygehus i alt,curr_hospi
 DK,,Heraf indlagte på intensiv afd.,curr_icu
 DK,,Heraf indlagte på intensiv afd. og i respirator,curr_respi
+DK,,Indlagte m nd,cum_hospi
 DK,,date,date
 EE,,Haiglas,curr_hospi
 EE,,Kriitilises seisundis (juhitaval hingamisel),curr_icu

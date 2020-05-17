@@ -20,7 +20,7 @@ from services.cleaner import (
     OWID,
 )
 
-from services.scrapper import FI_scrap,ES_scrap,NL_scrap
+from services.scrapper import DK_scrap,FI_scrap,ES_scrap,NL_scrap
 
 
 HEADERS = {
@@ -44,7 +44,7 @@ countries_data = {
         "url_sst_dk":"https://www.sst.dk/da/corona/tal-og-overvaagning",
         "url_apify": "https://api.apify.com/v2/datasets/Ugq8cNqnhUSjfJeHr/items?format=json&clean=1",
         "url_statista": "https://www.statista.com/statistics/1105720/patients-hospitalized-due-to-coronavirus-in-denmark/",
-        "scrapper": download_denmark,
+        "scrapper": DK_scrap.download_denmark,
         "cleaner": DK.clean,
     },
     "EE": {

@@ -40,12 +40,13 @@ def update_all(spec_countries=None):
             )
             logging.critical(e, exc_info=True)
 
-    logging.info(f"merging data with TSP POP...")
-
     df = pd.DataFrame()
     for d in ALL_EU:
         df = pd.concat([df, d], axis=0)
 
     df = df[~df.value.isnull()]
+
+    logging.info("finished scrapping and cleanning.")
+    logging.info("start pushing to S3...")
 
     data_combiner.update_current_s3d_dataset(df)

@@ -75,25 +75,6 @@ def download_belgium(covid):
         f.write(response.content)
 
 
-def download_denmark(covid):
-    df_apify = pd.read_json(covid.params["url_apify"])
-    df_apify.to_csv(f"{covid.path_to_save}/total.csv")
-
-    all_df = pd.read_html(
-        "https://www.sst.dk/da/corona/tal-og-overvaagning",
-        match="Antal indlagte på sygehus i alt",
-        header=0,
-    )
-
-    df_sst_dk = all_df[0]
-    df_sst_dk["date"] = datetime.now().strftime("%Y-%m-%d")
-    df_sst_dk.columns = [c.strip() for c in df_sst_dk.columns]
-    df_sst_dk.rename(columns={"Unnamed: 0": "area"}, inplace=True)
-
-    df_sst_dk.to_csv(
-        f"{covid.path_to_save}/current_sst.csv", index=True, encoding="utf-8"
-    )
-
 
 def download_estonia(covid):
     csv_export_url = covid.params["url_spreadsheet"].replace(

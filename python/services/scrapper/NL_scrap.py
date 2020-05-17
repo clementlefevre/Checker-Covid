@@ -2,29 +2,35 @@
 import pandas as pd
 import requests
 from datetime import datetime, date
+import time
+import logging
 
 def download_netherland(covid):
 
     ## new cases
-    r = requests.get(covid.params["url_new_intake"])
+    r = requests.get(covid.params["url_new_intake"], headers=covid.header)
     df_1 = pd.DataFrame(pd.DataFrame(r.json()).iloc[0])[0].apply(pd.Series)
     df_1.columns = ["date", "new_cases"]
     df_2 = pd.DataFrame(pd.DataFrame(r.json()).iloc[1])[1].apply(pd.Series)
     df_2.columns = ["date", "new_suspected_cases"]
 
-    ## new ICU
-    r = requests.get(covid.params["url_intake_count"])
+    time.sleep(3)
+
+    # new ICU
+    r = requests.get(covid.params["url_intake_count"], headers=covid.header)
     df_curr_icu = pd.DataFrame(r.json())
 
     df_curr_icu.columns = ["date", "curr_icu"]
 
     # IC with at least one COVID case
-    r = requests.get(covid.params["url_icu"])
+    r = requests.get(covid.params["url_icu"], headers=covid.header)
     df_icu = pd.DataFrame(r.json())
     df_icu.columns = ["date", "icu_with_al_one_case"]
 
+    time.sleep(3)
+
     # ICU Cumulative
-    r = requests.get(covid.params["url_ic_cumulative"])
+    r = requests.get(covid.params["url_ic_cumulative"], headers=covid.header)
     df_icu_cum = pd.DataFrame(r.json())
     df_icu_cum.columns = ["date", "cum_icu"]
 
@@ -35,7 +41,11 @@ def download_netherland(covid):
 
     df.to_csv(f"{covid.path_to_save}/total.csv", index=False)
 
+    time.sleep(3)
+
     # RIVM
+
+    logging.info("NL : starting with RIVM...")
     all_df = pd.read_html(covid.params["url_rivm"])
 
     df = all_df[0]
