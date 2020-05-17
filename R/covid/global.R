@@ -2,6 +2,7 @@ library(data.table)
 library(lubridate)
 library(plotly)
 library(DT)
+library(R.utils)
 
 print("coucou")
 

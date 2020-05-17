@@ -14,28 +14,30 @@ from services.country_scrappers import *
 
 import logging
 
-logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(logging.ERROR)
+logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(
+    logging.ERROR
+)
 
 
-file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../..", "data"))
+file_path = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../..", "data")
+)
 
 
 def create_folder():
     for country in COUNTRIES.keys():
-        Path(f"{file_path}/countries/{country}").mkdir(parents=True, exist_ok=True)
+        Path(f"{file_path}/countries/{country}").mkdir(
+            parents=True, exist_ok=True
+        )
 
 
 class COVID:
     def __init__(
-        self,
-        country,
-        update=True,
-        dt_created=datetime.now(),  # .strftime("%Y-%m-%d"),
-        data={},
+        self, country, update=True, data={},
     ):
         self.country = country
         self.update = update
-        self.dt_created = dt_created
+        self.dt_created = datetime.now()
         self.dt_created_date_str = self.dt_created.strftime("%Y-%m-%d")
         self.data = {}
         self.params = COUNTRIES[country]

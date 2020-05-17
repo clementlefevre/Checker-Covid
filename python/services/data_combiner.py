@@ -53,7 +53,6 @@ def update_current_s3d_dataset(df_new):
 
     has_error = True
 
-    # df_new["updated_on"] = pd.to_datetime(df_new["updated_on"])
     df_new_clean = filter_on_latest_update(df_new)
     df_current_s3 = get_current_latest_file_on_s3()
 
@@ -81,5 +80,7 @@ def update_current_s3d_dataset(df_new):
         has_error = False
 
     # df_updated = df_updated[cols_of_scope]
-
+    logging.info(
+        f"\n{df_updated.updated_on.value_counts().sort_values(ascending=False).head()}"
+    )
     upload_to_s3(df_updated, df_new_clean, has_error)

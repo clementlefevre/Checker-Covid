@@ -11,7 +11,9 @@ logging.basicConfig(
     format="%(asctime)s:%(levelname)s:%(message)s",
 )
 
-logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(logging.ERROR)
+logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(
+    logging.ERROR
+)
 
 
 def job():
@@ -26,12 +28,15 @@ def job():
         logging.critical(e, exc_info=True)
 
 
-schedule.every().hour.do(job)
+def main_job():
+    time.sleep(60 * 1)
+    job()
+    schedule.every().hour.do(job)
 
-time.sleep(60 * 5)
+    while 1:
+        schedule.run_pending()
+        time.sleep(1)
 
-job()
 
-while 1:
-    schedule.run_pending()
-    time.sleep(1)
+if __name__ == "__main__":
+    main_job()
