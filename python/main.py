@@ -28,15 +28,10 @@ def job():
         logging.critical(e, exc_info=True)
 
 
-def main_job():
-    time.sleep(60 * 1)
-    job()
-    schedule.every().hour.do(job)
+time.sleep(60 * 1)
+job()
+schedule.every().hour.do(job)
 
-    while 1:
-        schedule.run_pending()
-        time.sleep(1)
-
-
-if __name__ == "__main__":
-    main_job()
+while 1:
+    schedule.run_pending()
+    time.sleep(1)
