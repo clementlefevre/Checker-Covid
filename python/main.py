@@ -28,7 +28,7 @@ def job():
         logging.critical(e, exc_info=True)
 
 
-time.sleep(60 * 1)
+time.sleep(60 * 5)
 job()
 schedule.every().hour.do(job)
 
