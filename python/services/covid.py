@@ -16,8 +16,6 @@ file_path = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "../..", "data")
 )
 
-ua = UserAgent()
-
 
 def create_folder():
     for country in COUNTRIES.keys():
@@ -37,6 +35,8 @@ class COVID:
         self.data = {}
         self.params = COUNTRIES[country]
         self.countries_list = COUNTRIES.keys()
+
+        ua = UserAgent()
         self.header = {"User-Agent": str(ua.random)}
 
         self.data_path = f"{file_path}/countries/{country}"
