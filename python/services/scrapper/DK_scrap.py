@@ -7,6 +7,20 @@ def download_denmark(covid):
     df_apify = pd.read_json(covid.params["url_apify"])
     df_apify.to_csv(f"{covid.path_to_save}/total.csv")
 
+    df_cases_sst = pd.read_html(
+        covid.params["url_sst_dk"], match="Smittede", header=0,
+    )[0]
+
+    df_cases_sst["date"] = covid.dt_created_date_str
+    df_cases_sst.columns = [c.strip() for c in df_cases_sst.columns]
+    df_cases_sst.rename(columns={"Unnamed: 0": "area"}, inplace=True)
+
+    df_cases_sst.to_csv(
+        f"{covid.path_to_save}/total_cases_sst.csv",
+        index=True,
+        encoding="utf-8",
+    )
+
     all_df = pd.read_html(
         covid.params["url_sst_dk"],
         match="Antal indlagte på sygehus i alt",

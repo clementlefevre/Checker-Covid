@@ -85,7 +85,7 @@ DE,,NeuGenesen,new_cured
 DE,,AnzahlGenesen,curr_cured
 DE,,cum_AnzahlFall,cases
 DK,,tested,cum_tests
-DK,,infected,cases
+DK,,Smittede personer3,cases
 DK,,deceased,dead
 DK,,sourceUrl,
 DK,,lastUpdatedAtApify,date

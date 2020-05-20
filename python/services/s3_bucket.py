@@ -6,6 +6,7 @@ import pandas as pd
 from collections import namedtuple
 import boto3
 import logging
+import pathlib
 
 file_path = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "../..", "data")
@@ -62,19 +63,22 @@ def upload_to_s3(updated_df, new_df, has_error=False):
     error_tag = "_error" if has_error else ""
 
     filename_archive_s3 = (
-        f'all_EU_{now.strftime("%Y%m%d_%H:%M:%S")}{error_tag}.csv.gz'
+        f'all_EU_{now.strftime("%Y%m%d_%H_%M_%S")}{error_tag}.csv.gz'
     )
     filename_all_EU = f"all_EU{error_tag}.csv.gz"
 
     # store locally
+
     new_df.to_csv(
-        f"{file_path}/cleaned_data_archives/{filename_archive_s3}",
+        pathlib.Path(file_path)
+        / "cleaned_data_archives"
+        / filename_archive_s3,
         index=False,
         compression="gzip",
     )
 
     updated_df.to_csv(
-        f"{file_path}/cleaned_data_archives/{filename_all_EU}",
+        pathlib.Path(file_path) / "cleaned_data_archives" / filename_all_EU,
         index=False,
         compression="gzip",
     )
