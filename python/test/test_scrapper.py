@@ -1,5 +1,12 @@
-from config import COUNTRIES
 from services.covid import COVID
+
+import logging
+
+logging.basicConfig(
+    filename="covid.log",
+    level=logging.INFO,
+    format="%(asctime)s:%(levelname)s:%(message)s",
+)
 
 
 def test_scrapper_AT():
@@ -11,12 +18,18 @@ def test_scrapper_AT():
 def test_scrapper_BE():
     covid = COVID("BE", update=False)
     df = covid.cleaner()
+    df
 
 
 def test_BE_():
     covid = COVID("BE", update=True)
     df = covid.cleaner()
+    df
 
+
+def test_DK():
+    covid = COVID("DK")
+    df = covid.cleaner()
     df
 
 
@@ -34,12 +47,6 @@ def test_ES_cleaner():
 
 def test_IT_regions():
     covid = COVID("IT")
-    df = covid.cleaner()
-    df
-
-
-def test_DK():
-    covid = COVID("DK")
     df = covid.cleaner()
     df
 

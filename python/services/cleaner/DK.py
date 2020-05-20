@@ -1,10 +1,11 @@
 import warnings
 
-warnings.simplefilter(action="ignore", category=FutureWarning)
+
 import pandas as pd
-from datetime import date, timedelta
 
 from ..translator import translate_and_select_cols
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
 def _clean_apify(covid):
@@ -86,7 +87,9 @@ def _clean_sst_icu(covid):
         f"{covid.path_to_save}/{filename}", encoding="utf-8", thousands="."
     )
 
-    df = df[df["Alders gruppe"] == "I alt"][["Indlagte i alt", "date"]]
+    df = df[df["Alders gruppe"] == "I alt"][
+        ["Indlagte p intensiv i alt", "date"]
+    ]
     df.columns = ["value", "date"]
     df["key"] = "cum_icu"
     df["updated_on"] = pd.to_datetime(covid.dt_created)
