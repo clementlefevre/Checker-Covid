@@ -85,7 +85,7 @@ shinyServer(function(input, output, session) {
     fig
   })
 
-  output$table <- DT::renderDataTable( {
+  output$table <- DT::renderDataTable({
     req(credentials()$user_auth)
     if (input$show.all.keys == FALSE) {
       data <- country.timeline()
@@ -96,7 +96,9 @@ shinyServer(function(input, output, session) {
       data[(date >= input$date.from) &
         (date <= input$date.to)]
 
-    DT::datatable(castTable(data),rownames=FALSE, options = list(pageLength = 15))
+    DT::datatable(castTable(data), rownames = FALSE, options = list(pageLength = 15)) %>% 
+      formatDate("updated_on", method = "toLocaleString") %>%
+      formatDate("date", method = "toDateString")
   })
 
   output$dropdown_keys <- renderUI({
@@ -168,10 +170,10 @@ shinyServer(function(input, output, session) {
     df.from.file$date <- as_date(df.from.file$date, tz = "Europe/Berlin")
     df(df.from.file)
 
-    table <-  DT::datatable(df(),rownames = FALSE) %>% formatStyle(names(df()),
-    
-      backgroundColor =  'lightgreen')
-    return (table)
+    table <- DT::datatable(df(), rownames = FALSE) %>% formatStyle(names(df()),
+      backgroundColor = "lightgreen"
+    )
+    return(table)
   })
 
   # show hide import file button and update
@@ -199,13 +201,13 @@ shinyServer(function(input, output, session) {
     ts <- now() %>%
       as.numeric(.) %>%
       round(0)
-    DT.to.import$ts <-  ts
+    DT.to.import$ts <- ts
     file_import_name <- paste0("patch_", ts, "_", user_name, ".csv.gz")
-   
-    DT.to.import[, updated_on := as_datetime(ts, tz="Europe/Berlin")]
-    browser()
+
+    DT.to.import[, updated_on := as_datetime(ts, tz = "Europe/Berlin")]
+
     DT.to.import$source_url <- paste0("patched by ", user_name, " via excel import.")
-    
+
     saveDTtoS3(DT.to.import, file_import_name)
     DT <<- patchSingle(DT, DT.to.import)
     removeModal()

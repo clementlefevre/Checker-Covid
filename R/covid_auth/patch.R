@@ -32,7 +32,7 @@ patch <- function(DT.original, DT.patches) {
   print("finished filter on latest updated_on.")
   
   saveDTtoS3(DT.with.patches.latest[,c('country','date','key','value','updated_on','source_url','filename')], "all_EU_patched.csv.gz")
-  
+ 
   return(DT.with.patches.latest)
 }
 
