@@ -1,28 +1,17 @@
 import warnings
-
-warnings.simplefilter(action="ignore", category=FutureWarning)
 import logging
+import requests
+import pandas as pd
+from zipfile import ZipFile
+from io import BytesIO
+from datetime import datetime
+
 
 logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(
     logging.ERROR
 )
 
-
-import requests
-import re
-import pandas as pd
-from zipfile import ZipFile
-from io import BytesIO, StringIO
-from lxml import html
-
-
-from pathlib import Path
-
-
-from datetime import datetime, timedelta
-
-# https://stackoverflow.com/a/41041028/3209276
-import urllib3
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 requests.packages.urllib3.disable_warnings()
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ":HIGH:!DH:!aNULL"
@@ -75,7 +64,6 @@ def download_belgium(covid):
         f.write(response.content)
 
 
-
 def download_estonia(covid):
     csv_export_url = covid.params["url_spreadsheet"].replace(
         "/edit#gid=", "/export?format=csv&gid="
@@ -92,7 +80,9 @@ def download_france_total(covid, url_values, field):
 
     response_values = requests.get(url_values, headers=headers)
 
-    df = pd.DataFrame(response_values.json()["content"]["zonrefs"][0]["values"])
+    df = pd.DataFrame(
+        response_values.json()["content"]["zonrefs"][0]["values"]
+    )
     if field != "test":
         df = df[df.sexe == "0"]
     else:
@@ -147,20 +137,6 @@ def download_italy(covid):
 def download_norway(covid):
     df = pd.read_json(covid.params["url_apify"])
     df.to_csv(f"{covid.path_to_save}/total.csv", index=False)
-
-
-def download_portugal(covid):
-    date = datetime.now().strftime("%Y-%m-%d")
-    # https://covid19.min-saude.pt/ponto-de-situacao-atual-em-portugal/
-    r = requests.get(covid.params["url_esri_1"], headers=headers)
-    df = pd.DataFrame(r.json()["features"])["attributes"].apply(pd.Series)
-
-    df.to_csv(f"{covid.path_to_save}/total_url_esri_1.csv", index=False)
-
-    r = requests.get(covid.params["url_esri_2"], headers=headers)
-    df = pd.DataFrame(r.json()["features"])["attributes"].apply(pd.Series)
-
-    df.to_csv(f"{covid.path_to_save}/total_url_esri_2.csv", index=False)
 
 
 def download_switzerland(covid):

@@ -8,7 +8,7 @@ def download_denmark(covid):
     df_apify.to_csv(f"{covid.path_to_save}/total.csv")
 
     df_cases_sst = pd.read_html(
-        covid.params["url_sst_dk"], match="Smittede", header=0,
+        covid.params["url_sst_dk"], match="Smittede", header=0, thousands="."
     )[0]
 
     df_cases_sst["date"] = covid.dt_created_date_str
@@ -25,6 +25,7 @@ def download_denmark(covid):
         covid.params["url_sst_dk"],
         match="Antal indlagte på sygehus i alt",
         header=0,
+        thousands=".",
     )
 
     df_sst_dk = all_df[0]
@@ -41,6 +42,7 @@ def download_denmark(covid):
         covid.params["url_sst_dk"],
         match="Bekræftede COVID-19 tilfælde i alt",
         header=0,
+        thousands=".",
     )[0]
 
     # we rename the column to avoid spec characters :
@@ -62,6 +64,7 @@ def download_denmark(covid):
         covid.params["url_sst_dk"],
         match="Bekræftede COVID-19 tilfælde i alt",
         header=0,
+        thousands=".",
     )[1]
 
     # we rename the column to avoid spec characters :

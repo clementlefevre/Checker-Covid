@@ -110,7 +110,7 @@ EE,,Kriitilises seisundis (juhitaval hingamisel),curr_respi
 ES,,CCAA,area
 ES,,FECHA,date
 ES,,CASOS,
-ES,,PCR+,cases
+ES,,PCR+,
 ES,,TestAc+,
 ES,,Hospitalizados,curr_hospi
 ES,,UCI,curr_icu

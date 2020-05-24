@@ -20,7 +20,7 @@ from services.cleaner import (
     OWID,
 )
 
-from services.scrapper import DK_scrap,FI_scrap,ES_scrap,NL_scrap
+from services.scrapper import DK_scrap,FI_scrap,ES_scrap,NL_scrap,PT_scrap
 
 
 HEADERS = {
@@ -103,6 +103,7 @@ countries_data = {
         "url_ic_cumulative": "https://www.stichting-nice.nl/covid-19/public/intake-cumulative/",
         "url_actuel": "https://www.rivm.nl/coronavirus-covid-19/actueel",
         "url_rivm" :"https://www.rivm.nl/coronavirus-covid-19/actueel",
+        "url_curr_hospi":"https://www.stichting-nice.nl/covid-19/public/zkh/intake-count/",
         "scrapper": NL_scrap.download_netherland,
         "cleaner": NL.clean,
     },
@@ -118,10 +119,11 @@ countries_data = {
         "cleaner": OWID.clean,
     },
     "PT": {
-        "url_esri_1":"https://services.arcgis.com/CCZiGSEQbAxxFVh3/arcgis/rest/services/An%C3%A1lises_Extra_Covid/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=Data_do_Relat%C3%B3rio%20asc&resultOffset=0&resultRecordCount=32000&resultType=standard&cacheHint=true",
+        "url_esri_1":"https://services.arcgis.com/CCZiGSEQbAxxFVh3/arcgis/rest/services/An%C3%A1lises_Extra_Covid_new/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=Data_do_Relat%C3%B3rio%20asc&resultOffset=0&resultRecordCount=32000&resultType=standard&cacheHint=true",
+        #"url_esri_1":"https://services.arcgis.com/CCZiGSEQbAxxFVh3/arcgis/rest/services/An%C3%A1lises_Extra_Covid/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=Data_do_Relat%C3%B3rio%20asc&resultOffset=0&resultRecordCount=32000&resultType=standard&cacheHint=true",
         "url_esri_2":"https://services.arcgis.com/CCZiGSEQbAxxFVh3/arcgis/rest/services/COVID19Portugal_view/FeatureServer/0/query?f=json&where=gr_etario_0_9%20IS%20NOT%20NULL&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=datarelatorio%20asc&resultOffset=0&resultRecordCount=32000&resultType=standard&cacheHint=true",
 
-        "scrapper": download_portugal,
+        "scrapper": PT_scrap.download_portugal,
         "cleaner": PT.clean,
     },
     "CH": {

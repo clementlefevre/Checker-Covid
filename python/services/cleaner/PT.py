@@ -26,6 +26,7 @@ def clean(covid):
     )
 
     df_melted_url_1["source_url"] = covid.params["url_esri_1"]
+    df_melted_url_1["filename"] = filename
 
     filename = "total_url_esri_2.csv"
     df = pd.read_csv(f"{covid.path_to_save}/{filename}")
@@ -44,11 +45,11 @@ def clean(covid):
     )
 
     df_melted_url_2["source_url"] = covid.params["url_esri_1"]
+    df_melted_url_2["filename"] = filename
 
     df_melted = pd.concat([df_melted_url_1, df_melted_url_2], axis=0)
     df_melted["updated_on"] = pd.to_datetime(covid.dt_created)
 
-    df_melted["filename"] = filename
     df_melted["country"] = covid.country
 
     return df_melted

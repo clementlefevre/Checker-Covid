@@ -82,6 +82,19 @@ def test_NL_scrapper():
     NL_scrap.download_netherland(covid)
 
 
+def test_PT_scrapper():
+    from services.scrapper import PT_scrap
+
+    covid = COVID("PT")
+    PT_scrap.download_portugal(covid)
+
+
+def test_PT():
+    covid = COVID("PT")
+    df = covid.cleaner()
+    df
+
+
 def test_SE_scrapper():
     from services.country_scrappers import download_sweden
 

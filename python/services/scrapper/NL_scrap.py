@@ -34,10 +34,17 @@ def download_netherland(covid):
     df_icu_cum = pd.DataFrame(r.json())
     df_icu_cum.columns = ["date", "cum_icu"]
 
+
+    # Curr Hospi:
+    r = requests.get(covid.params["url_curr_hospi"], headers=covid.header)
+    df_curr_hospi = pd.DataFrame(r.json())
+    df_curr_hospi.columns = ["date", "curr_hospi"]
+
     df = pd.merge(df_1, df_2, on="date")
     df = pd.merge(df, df_curr_icu, on="date")
     df = pd.merge(df, df_icu, on="date")
     df = pd.merge(df, df_icu_cum, on="date")
+    df = pd.merge(df,df_curr_hospi,on="date")
 
     df.to_csv(f"{covid.path_to_save}/total.csv", index=False)
 
