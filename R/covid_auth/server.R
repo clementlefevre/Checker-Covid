@@ -2,7 +2,7 @@ source("plot_service.R")
 
 shinyServer(function(input, output, session) {
   df <- reactiveVal(NULL)
- 
+
 
   # login status and info will be managed by shinyauthr module and stores here
   credentials <- callModule(shinyauthr::login, "login",
@@ -36,7 +36,8 @@ shinyServer(function(input, output, session) {
         choices = country.list, multiple = TRUE, selected = c("AT"), options = list(`actions-box` = TRUE)
       ),
 
-      menuItemOutput("menuitem"),
+
+      menuItemOutput("dropdown_keys"),
       radioButtons(
         "pop", "value",
         c(
@@ -47,8 +48,8 @@ shinyServer(function(input, output, session) {
 
       menuItem("Chart", tabName = "chart"),
       menuItem("Table", tabName = "table"),
-      menuItem("Download data", tabName = "rawdata"),
-      menuItem("Import data", tabName = "importdata")
+      menuItem("Export data", tabName = "rawdata"),
+      menuItem("Patch data", tabName = "importdata")
     )
   })
 
@@ -65,7 +66,6 @@ shinyServer(function(input, output, session) {
 
   country.timeline <-
     eventReactive(c(input$country, input$key), {
-      
       filtered.DT <-
         DT[(country %in% input$country) &
           (key == input$key)]
@@ -85,7 +85,7 @@ shinyServer(function(input, output, session) {
     fig
   })
 
-  output$mytable <- DT::renderDataTable(rownames = FALSE, {
+  output$table <- DT::renderDataTable( {
     req(credentials()$user_auth)
     if (input$show.all.keys == FALSE) {
       data <- country.timeline()
@@ -96,21 +96,21 @@ shinyServer(function(input, output, session) {
       data[(date >= input$date.from) &
         (date <= input$date.to)]
 
-    castTable(data)
+    DT::datatable(castTable(data),rownames=FALSE, options = list(pageLength = 15))
   })
 
-  output$menuitem <- renderUI({
+  output$dropdown_keys <- renderUI({
     pickerInput("key",
       "key :",
-      #choices = levels(outVar()),
-     choices = levels(keys.list),
+      # choices = levels(outVar()),
+      choices = levels(keys.list),
       multiple = FALSE
     )
   })
 
   output$downloadXLSX <- downloadHandler(
     filename = function() {
-      paste("data-", Sys.Date(), ".xlsx", sep = "")
+      paste("checker_covid_export_", Sys.Date(), ".xlsx", sep = "")
     },
     content = function(file) {
       write_xlsx(
@@ -133,18 +133,16 @@ shinyServer(function(input, output, session) {
     }
   )
 
- 
-  
-  observeEvent(input$do_update,{
+
+  observeEvent(input$do_update, {
     showModal(modalDialog("Patching with all files...", footer = NULL))
     DT <<- patchAllData()
-   
+
     removeModal()
-    
+    shinyjs::reset("form")
     shinyalert("OK.", "data have been updated.", type = "success")
-    
   })
- 
+
 
   output$contents <- renderDataTable({
 
@@ -170,10 +168,13 @@ shinyServer(function(input, output, session) {
     df.from.file$date <- as_date(df.from.file$date, tz = "Europe/Berlin")
     df(df.from.file)
 
-    return(df())
+    table <-  DT::datatable(df(),rownames = FALSE) %>% formatStyle(names(df()),
+    
+      backgroundColor =  'lightgreen')
+    return (table)
   })
 
-  # show hide import file button
+  # show hide import file button and update
   observe({
     shinyjs::hide("action")
 
@@ -182,21 +183,33 @@ shinyServer(function(input, output, session) {
     }
   })
 
+  output$do_update <- renderUI({
+    req(credentials()$info$permissions == "admin")
+    actionButton(
+      "do_update",
+      "Repatch all"
+    )
+  })
+
   observeEvent(input$action, {
-    
     showModal(modalDialog("Patching the data with your file...", footer = NULL))
     DT.to.import <- df()
+    setDT(DT.to.import)
     user_name <- credentials()$info$user[1]
-    ts <- now(tzone = "Europe/Berlin") %>%
+    ts <- now() %>%
       as.numeric(.) %>%
       round(0)
+    DT.to.import$ts <-  ts
     file_import_name <- paste0("patch_", ts, "_", user_name, ".csv.gz")
-    DT.to.import$updated_on <- ts
-    DT.to.import$source_url <- user_name
-    setDT(DT.to.import)
-    saveDTtoS3(DT.to.import,file_import_name)
-    DT <<-patchSingle(DT,DT.to.import)
+   
+    DT.to.import[, updated_on := as_datetime(ts, tz="Europe/Berlin")]
+    browser()
+    DT.to.import$source_url <- paste0("patched by ", user_name, " via excel import.")
+    
+    saveDTtoS3(DT.to.import, file_import_name)
+    DT <<- patchSingle(DT, DT.to.import)
     removeModal()
-    shinyalert("OK.", "data have been imported. Please reload the page to see the update.", type = "success")
+    shinyjs::reset("form")
+    shinyalert("OK.", "data have been patched.", type = "success")
   })
 })

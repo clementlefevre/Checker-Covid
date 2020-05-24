@@ -20,18 +20,12 @@ source("patch.R")
 dir.create(file.path("./temp"), showWarnings = FALSE)
 
 # sample logins dataframe with passwords hashed by sodium package
-user_base <- tibble(
-  user = c("user1", "user2"),
-  password = sapply(c("pass1", "pass2"), sodium::password_store),
-  permissions = c("admin", "standard"),
-  name = c("User One", "User Two")
-)
-
-print("coucou")
-
+user_base <-  read.csv('data/users.csv',stringsAsFactors = F) %>% as_tibble()
+user_base$password <-  sapply(user_base$password,sodium::password_store)
 
 loadData <- function() {
   print("LOADING DATA FROM S3...")
+  
 
   if (object_exists("all_EU_patched.csv.gz",
     bucket = "checkercovid", key = AWS_ACCESS_KEY_ID,

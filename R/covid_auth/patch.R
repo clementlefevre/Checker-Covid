@@ -1,6 +1,6 @@
 cleanDT <- function(DT) {
   DT$date <- ymd(DT$date)
-  DT$updated_on <- ymd_hms(DT$updated_on, tz = "Europe/Berlin")
+  DT$updated_on <- ymd_hms(DT$updated_on, tz="Europe/Berlin")
   DT$value <- as.numeric(DT$value)
   DT <- DT[!is.na(value)]
   DT <- DT[!is.na(key)]
@@ -31,7 +31,7 @@ patch <- function(DT.original, DT.patches) {
   
   print("finished filter on latest updated_on.")
   
-  saveDTtoS3(DT.with.patches.latest, "all_EU_patched.csv.gz")
+  saveDTtoS3(DT.with.patches.latest[,c('country','date','key','value','updated_on','source_url','filename')], "all_EU_patched.csv.gz")
   
   return(DT.with.patches.latest)
 }
@@ -59,7 +59,7 @@ patchAllData <- function() {
     DT.patches <- rbindlist(lapply(patch.files.to.read, fread))
     print("finished reading list of s3 patches files...")
     DT.patches[, date := ymd(date)]
-    DT.patches[, updated_on := as_datetime(updated_on, tz = "Europe/Berlin")]
+    DT.patches[, updated_on := as_datetime(updated_on)]
     
     DT.with.patches.latest <- patch(DT.original, DT.patches)
     print("saving all_EU_patched.csv.gz to S3...")
@@ -75,7 +75,7 @@ patchAllData <- function() {
 patchSingle <-  function(DT.original, DT.patches){
   DT.patches[, date := ymd(date)]
   
-  DT.patches[, updated_on := as_datetime(updated_on, tz = "Europe/Berlin")]
+  DT.patches[, updated_on := as_datetime(updated_on, tz="Europe/Berlin")]
   DT.with.patches <- patch(DT.original,DT.patches)
   
   return (DT.with.patches)

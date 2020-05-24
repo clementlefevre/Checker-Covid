@@ -29,7 +29,6 @@ dashboardPage(
     tabItems(
       tabItem(
         "chart",
-
         fluidRow(
           plotlyOutput("timeline.1")
         )
@@ -50,24 +49,25 @@ dashboardPage(
           column(3, checkboxInput("show.all.keys", "show all keys", TRUE))
         ),
 
-        DT::dataTableOutput("mytable")
+        DT::dataTableOutput("table")
       ),
 
       tabItem(
         "rawdata",
-        actionButton("do_update", "Update Data"),
+       
         downloadButton("downloadXLSX", "Download all data as XLSX")
       ),
       tabItem(
         "importdata",
-       h3("To manually update the dataset, please download the Excel Template, fill it and then upload it:"),
-        br(),br(),downloadButton("downloadImportTemplate", "Download Empty Excel Import File"),
-      
-        # Input: Select a file ----
-        fileInput("file1", "Choose XLSX File",
+       h3("To manually update the dataset, first download the Excel Template, fill it and then upload it:"),
+uiOutput("do_update"),br(),hr(),
+fluidRow(column(4,h3("1 - Downlad patch template"),downloadButton("downloadImportTemplate", "Download Empty Excel Import File")),
+      column(4,     h3("2 - Fill it and Upload it"),   fileInput("file1", "Upload your XLSX File",
                   multiple = FALSE,
-                  accept = c("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")),
-        actionButton("action", "Import data"),
+                  accept = c("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))),
+      column(4,h3("3 - Patch the data !"),actionButton("action", "Import data", icon("paper-plane"), 
+                     style="color: #fff; background-color: #00887d; border-color: #00887d"))),
+       br(),br(),
        dataTableOutput("contents")
       )
     )
