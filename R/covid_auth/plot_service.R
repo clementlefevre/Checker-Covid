@@ -1,3 +1,6 @@
+library(RColorBrewer)
+
+
 plotlyChart <- function(data,input){
   data <-  data[order(date)]
 
@@ -10,6 +13,8 @@ fig <-
     mode = "lines+markers",
     marker = list(size = 5, opacity = 0.5),
     color = ~country,
+    colors = brewer.pal(length(names(table(data$country))),
+                        "Paired"),
     text = ~country,
     hovertemplate = paste(
       "<b>%{text}</b>",

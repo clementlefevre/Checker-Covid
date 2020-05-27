@@ -49,7 +49,8 @@ shinyServer(function(input, output, session) {
       menuItem("Chart", tabName = "chart"),
       menuItem("Table", tabName = "table"),
       menuItem("Export data", tabName = "rawdata"),
-      menuItem("Patch data", tabName = "importdata")
+      menuItem("Patch data", tabName = "importdata"),
+      menuItem("About", tabName = "about")
     )
   })
 
@@ -98,7 +99,7 @@ shinyServer(function(input, output, session) {
 
     DT::datatable(castTable(data), rownames = FALSE, options = list(pageLength = 15)) %>% 
       formatDate("updated_on", method = "toLocaleString") %>%
-      formatDate("date", method = "toDateString")
+      formatDate("date", method = "toLocaleDateString")
   })
 
   output$dropdown_keys <- renderUI({
@@ -139,6 +140,7 @@ shinyServer(function(input, output, session) {
   observeEvent(input$do_update, {
     showModal(modalDialog("Patching with all files...", footer = NULL))
     DT <<- patchAllData()
+    update_options()
 
     removeModal()
     shinyjs::reset("form")
@@ -210,6 +212,8 @@ shinyServer(function(input, output, session) {
 
     saveDTtoS3(DT.to.import, file_import_name)
     DT <<- patchSingle(DT, DT.to.import)
+    update_options()
+    
     removeModal()
     shinyjs::reset("form")
     shinyalert("OK.", "data have been patched.", type = "success")

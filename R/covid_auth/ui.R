@@ -2,14 +2,31 @@ library(shinydashboard)
 library(shinythemes)
 library(shinyWidgets)
 library(shinyalert)
+library(dashboardthemes)
+
+### creating custom logo object
+logo_blue_gradient <- shinyDashboardLogoDIY(
+  
+  boldText = "Checker"
+  ,mainText = "Covid"
+  ,textSize = 16
+  ,badgeText = "BETA"
+  ,badgeTextColor = "white"
+  ,badgeTextSize = 2
+  ,badgeBackColor = "#40E0D0"
+  ,badgeBorderRadius = 3
+  
+)
 
 
 dashboardPage(
 
   # put the shinyauthr logout ui module in here
-  dashboardHeader(
-    title = "Checker Covid",
-    tags$li(class = "dropdown", style = "padding: 8px;", shinyauthr::logoutUI("logout"))
+  dashboardHeader(### changing logo
+    
+    
+    tags$li(class = "dropdown", style = "padding: 8px;", shinyauthr::logoutUI("logout")),
+    title =logo_blue_gradient
   ),
 
   # setup a sidebar menu to be rendered server-side
@@ -19,7 +36,10 @@ dashboardPage(
   ),
 
 
-  dashboardBody(
+  dashboardBody( ### changing theme
+    shinyDashboardThemes(
+      theme = "onenote"
+    ),
     shinyjs::useShinyjs(),
 
     # put the shinyauthr login ui module here
@@ -54,7 +74,6 @@ dashboardPage(
 
       tabItem(
         "rawdata",
-       
         downloadButton("downloadXLSX", "Download all data as XLSX")
       ),
       tabItem(
@@ -69,7 +88,11 @@ fluidRow(column(4,h3("1 - Downlad patch template"),downloadButton("downloadImpor
                      style="color: #fff; background-color: #00887d; border-color: #00887d"))),
        br(),br(),
        dataTableOutput("contents")
-      )
+      ),
+tabItem(
+  "about",
+ box(h3("For any questions, problem, contact clement.san@gmail.com"))
+)
     )
   )
 )

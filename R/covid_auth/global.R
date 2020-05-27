@@ -20,26 +20,26 @@ source("patch.R")
 dir.create(file.path("./temp"), showWarnings = FALSE)
 
 # sample logins dataframe with passwords hashed by sodium package
-user_base <-  read.csv('data/users.csv',stringsAsFactors = F) %>% as_tibble()
-user_base$password <-  sapply(user_base$password,sodium::password_store)
+user_base <- read.csv("data/users.csv", stringsAsFactors = F) %>% as_tibble()
+user_base$password <- sapply(user_base$password, sodium::password_store)
 
 loadData <- function() {
   print("LOADING DATA FROM S3...")
-  
 
-  if (object_exists("all_EU_patched.csv.gz",
-    bucket = "checkercovid", key = AWS_ACCESS_KEY_ID,
-    secret = AWS_SECRET_ACCESS_KEY
-  )) {
-    print("LOADING all_EU_patched.csv.gz...")
-    DT <- fread(paste0(ROOT_S3, "all_EU_patched.csv.gz"))
-  }
-  else {
+
+  # if (object_exists("all_EU_patched.csv.gz",
+  #   bucket = "checkercovid", key = AWS_ACCESS_KEY_ID,
+  #   secret = AWS_SECRET_ACCESS_KEY
+  # )) {
+  #   print("LOADING all_EU_patched.csv.gz...")
+  #   DT <- fread(paste0(ROOT_S3, "all_EU_patched.csv.gz"))
+  # }
+  # else {
     print("all_EU_patched.csv.gz not found, creating it...")
     DT <- patchAllData()
-  }
+  #}
 
-  
+
 
 
   DT <- cleanDT(DT)
@@ -55,19 +55,16 @@ loadData <- function() {
   return(DT)
 }
 
-
-DT <- loadData()
-
-
-
-country.list <- unique(DT$country) %>% sort()
-
-dates.list <- unique(DT$date) %>% sort(decreasing = TRUE)
-keys.list <- unique(DT$key) %>% sort()
-
-dates.list.labels <- dates.list %>% format(., format = "%d.%m.%Y")
-dates.named.list <-
-  setNames(as.list(dates.list), dates.list.labels)
+update_options <- function() {
+  country.list <<- unique(DT$country) %>% sort()
+  
+  dates.list <<- unique(DT$date) %>% sort(decreasing = TRUE)
+  keys.list <<- unique(DT$key) %>% sort()
+  
+  dates.list.labels <<- dates.list %>% format(., format = "%d.%m.%Y")
+  dates.named.list <<-
+    setNames(as.list(dates.list), dates.list.labels)
+}
 
 
 
@@ -113,7 +110,13 @@ saveDTtoS3 <- function(DT, filename) {
   }
 }
 
+DT <- loadData()
+
+country.list <- NULL
+dates.list <- NULL
+keys.list <- NULL
+dates.list.labels <- NULL
+dates.named.list <- NULL
 
 
-
-print("ciao")
+update_options()
