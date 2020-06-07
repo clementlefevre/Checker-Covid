@@ -21,7 +21,7 @@ def get_provinces_links(covid):
 def get_province_data(covid, province_link):
     r_province = requests.get(covid.params["url_uclm"] + province_link)
     doc = html.fromstring(r_province.content)
-    script = doc.xpath(".//script")
+
     js_content = doc.xpath("//script//text()")
 
     parsed = js2xml.parse(js_content[7])

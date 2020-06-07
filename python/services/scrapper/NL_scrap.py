@@ -1,13 +1,13 @@
 
 import pandas as pd
 import requests
-from datetime import datetime, date
+from datetime import datetime
 import time
 import logging
 
-def download_netherland(covid):
 
-    ## new cases
+def download_netherland(covid):
+    # new cases
     r = requests.get(covid.params["url_new_intake"], headers=covid.header)
     df_1 = pd.DataFrame(pd.DataFrame(r.json()).iloc[0])[0].apply(pd.Series)
     df_1.columns = ["date", "new_cases"]
@@ -33,7 +33,6 @@ def download_netherland(covid):
     r = requests.get(covid.params["url_ic_cumulative"], headers=covid.header)
     df_icu_cum = pd.DataFrame(r.json())
     df_icu_cum.columns = ["date", "cum_icu"]
-
 
     # Curr Hospi:
     r = requests.get(covid.params["url_curr_hospi"], headers=covid.header)

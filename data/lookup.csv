@@ -164,6 +164,11 @@ IT,,casi_testati,cum_tests
 IT,,note_it,
 IT,,note_en,
 IT,,denominazione_regione,region
+LU,,Number of persons tested for COVID,tested
+LU,,Number of persons tested COVID+,cases
+LU,,Number of people in intensive care,curr_icu
+LU,,Number of people in standard care,curr_hospi
+LU,,Date,date
 NL,,Positief geteste personen,cases
 NL,,Ziekenhuisopnames,cum_hospi
 NL,,date,date

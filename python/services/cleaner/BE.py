@@ -17,9 +17,13 @@ def _clean_excel(covid):
     df_cases = pd.read_excel(
         source_file_path, sheet_name="CASES_AGESEX", engine="openpyxl"
     )
-    df_cases_group = df_cases[~df_cases["DATE"].isnull()].groupby(["DATE"]).sum()
+    df_cases_group = (
+        df_cases[~df_cases["DATE"].isnull()].groupby(["DATE"]).sum()
+    )
     df_cases_group["CASES"] = df_cases_group["CASES"].cumsum()
-    df_translated = translate_and_select_cols(df_cases_group.reset_index(), covid)
+    df_translated = translate_and_select_cols(
+        df_cases_group.reset_index(), covid
+    )
 
     df_translated["date"] = pd.to_datetime(df_translated["date"]).dt.date
     df_melt_cases = pd.melt(
@@ -30,8 +34,10 @@ def _clean_excel(covid):
         value_name="value",
     )
 
-    ## HOSP
-    df_hosp = pd.read_excel(source_file_path, sheet_name="HOSP", engine="openpyxl")
+    # HOSP
+    df_hosp = pd.read_excel(
+        source_file_path, sheet_name="HOSP", engine="openpyxl"
+    )
     df_hosp_group = df_hosp.groupby(["DATE"]).sum().reset_index()
     df_translated = translate_and_select_cols(df_hosp_group, covid)
 
@@ -44,8 +50,10 @@ def _clean_excel(covid):
         value_name="value",
     )
 
-    ## TEST
-    df_test = pd.read_excel(source_file_path, sheet_name="TESTS", engine="openpyxl")
+    # TEST
+    df_test = pd.read_excel(
+        source_file_path, sheet_name="TESTS", engine="openpyxl"
+    )
 
     df_translated = translate_and_select_cols(df_test, covid)
 

@@ -1,11 +1,11 @@
 import warnings
 
-warnings.simplefilter(action="ignore", category=FutureWarning)
 
 import pandas as pd
-from datetime import date, timedelta
 
 from ..translator import translate_and_select_cols
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
 def clean(covid):
@@ -55,4 +55,3 @@ def clean(covid):
     df = df.drop_duplicates(["key", "date"], keep="last")
 
     return df
-

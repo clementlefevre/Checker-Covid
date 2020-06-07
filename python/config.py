@@ -15,12 +15,13 @@ from services.cleaner import (
     FI,
     EE,
     IE,
+    LU,
     NL,
     NO,
     OWID,
 )
 
-from services.scrapper import DK_scrap,FI_scrap,ES_scrap,NL_scrap,PT_scrap
+from services.scrapper import DK_scrap,FI_scrap,ES_scrap,LU_scrap, NL_scrap,PT_scrap
 
 
 HEADERS = {
@@ -94,6 +95,12 @@ countries_data = {
         "url": "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv",
         "scrapper": download_italy,
         "cleaner": IT.clean,
+    },
+
+    "LU":{
+        "url":"https://msan.gouvernement.lu/en/graphiques-evolution.html",
+        "scrapper": LU_scrap.download,
+        "cleaner": LU.clean
     },
     "NL": {
         "url_global": "https://www.stichting-nice.nl/covid-19/public/global",
