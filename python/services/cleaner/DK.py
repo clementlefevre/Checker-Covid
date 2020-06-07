@@ -120,7 +120,7 @@ def _clean_sst_icu(covid):
     )
 
     df = df[df["Alders gruppe"] == "I alt"][
-        ["Indlagte p intensiv i alt", "date"]
+        ["Indlagte p intensiv i alt1", "date"]
     ]
     df.columns = ["value", "date"]
     df["key"] = "cum_icu"
