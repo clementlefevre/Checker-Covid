@@ -21,6 +21,12 @@ def clean(covid):
         value_name="value",
     )
 
+    df_melt_tested["updated_on"] = pd.to_datetime(covid.dt_created)
+
+    df_melt_tested["source_url"] = covid.params["url"]
+    df_melt_tested["filename"] = filename
+    df_melt_tested["country"] = covid.country
+
     filename = "icu.csv"
     df_icu = pd.read_csv(f"{covid.path_to_save}/{filename}")
 
@@ -34,6 +40,12 @@ def clean(covid):
         var_name="key",
         value_name="value",
     )
+
+    df_melt_icu["updated_on"] = pd.to_datetime(covid.dt_created)
+
+    df_melt_icu["source_url"] = covid.params["url"]
+    df_melt_icu["filename"] = filename
+    df_melt_icu["country"] = covid.country
 
     df = pd.concat([df_melt_tested, df_melt_icu], axis=0)
 
