@@ -1,5 +1,9 @@
 *.json
 data/
+.Rhistory
+*.Rproj
+*.code-workspace
+secret_config.R
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

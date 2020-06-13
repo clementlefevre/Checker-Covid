@@ -12,7 +12,9 @@ def clean(covid):
 
     df_translated = translate_and_select_cols(df_tested, covid)
 
-    df_translated["date"] = pd.to_datetime(df_translated["date"]).dt.date
+    df_translated["date"] = pd.to_datetime(
+        df_translated["date"], format="%d/%m/%Y"
+    ).dt.date
     df_melt_tested = pd.melt(
         df_translated,
         id_vars=["date"],
@@ -32,7 +34,9 @@ def clean(covid):
 
     df_translated = translate_and_select_cols(df_icu, covid)
 
-    df_translated["date"] = pd.to_datetime(df_translated["date"]).dt.date
+    df_translated["date"] = pd.to_datetime(
+        df_translated["date"], format="%d/%m/%Y"
+    ).dt.date
     df_melt_icu = pd.melt(
         df_translated,
         id_vars=["date"],

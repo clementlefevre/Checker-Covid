@@ -35,9 +35,9 @@ loadData <- function() {
   #   DT <- fread(paste0(ROOT_S3, "all_EU_patched.csv.gz"))
   # }
   # else {
-    print("all_EU_patched.csv.gz not found, creating it...")
-    DT <- patchAllData()
-  #}
+  print("all_EU_patched.csv.gz not found, creating it...")
+  DT <- patchAllData()
+  # }
 
 
 
@@ -57,10 +57,10 @@ loadData <- function() {
 
 update_options <- function() {
   country.list <<- unique(DT$country) %>% sort()
-  
+
   dates.list <<- unique(DT$date) %>% sort(decreasing = TRUE)
   keys.list <<- unique(DT$key) %>% sort()
-  
+
   dates.list.labels <<- dates.list %>% format(., format = "%d.%m.%Y")
   dates.named.list <<-
     setNames(as.list(dates.list), dates.list.labels)
@@ -111,6 +111,8 @@ saveDTtoS3 <- function(DT, filename) {
 }
 
 DT <- loadData()
+
+browser()
 
 country.list <- NULL
 dates.list <- NULL
