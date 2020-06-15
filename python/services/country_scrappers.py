@@ -69,7 +69,7 @@ def download_estonia(covid):
         "/edit#gid=", "/export?format=csv&gid="
     )
     df = pd.read_csv(csv_export_url)
-    df["date"] = datetime.now().strftime("%Y-%m-%d")
+    # df["date"] = datetime.now().strftime("%Y-%m-%d")
     df.to_csv(f"{covid.path_to_save}/total.csv")
 
 
@@ -80,9 +80,7 @@ def download_france_total(covid, url_values, field):
 
     response_values = requests.get(url_values, headers=headers)
 
-    df = pd.DataFrame(
-        response_values.json()["content"]["zonrefs"][0]["values"]
-    )
+    df = pd.DataFrame(response_values.json()["content"]["zonrefs"][0]["values"])
     if field != "test":
         df = df[df.sexe == "0"]
     else:

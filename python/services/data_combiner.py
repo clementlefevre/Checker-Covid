@@ -33,10 +33,7 @@ def filter_on_latest_update(df):
     df["date"] = pd.to_datetime(df["date"]).dt.date
 
     df_clean = (
-        df.sort_values("updated_on")
-        .groupby(["country", "date", "key"])
-        .tail(1)
-        # .reset_index()
+        df.sort_values("updated_on").groupby(["country", "date", "key"]).tail(1)
     )
 
     return df_clean[cols_of_scope]

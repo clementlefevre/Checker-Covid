@@ -24,7 +24,14 @@ def clean(covid):
         return date(2020, 2, 5) + timedelta(days=row["increment"])
 
     df_T["date"] = df_T.apply(set_date, axis=1)
+
     df_translated = translate_and_select_cols(df_T, covid)
+
+    df_translated["cum_hospi"] = (
+        df_translated["curr_hospi"]
+        + df_translated["discharged"]
+        + df_translated["dead_in_hospital"]
+    )
 
     df_translated.date = pd.to_datetime(df_translated.date).dt.date
 

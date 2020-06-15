@@ -84,7 +84,7 @@ DE,,Refdatum,
 DE,,NeuGenesen,new_cured
 DE,,AnzahlGenesen,curr_cured
 DE,,cum_AnzahlFall,cases
-DK,,tested,cum_tests
+DK,,tests,cum_tests
 DK,,Smittede personer3,cases
 DK,,deceased,dead
 DK,,sourceUrl,
@@ -99,7 +99,8 @@ EE,,Haiglas,curr_hospi
 EE,,Kriitilises seisundis (juhitaval hingamisel),curr_icu
 EE,,Haiglast väljasaanud,cum_out_hospi
 EE,,Haiglast välja saanud patsiente päevas,current_out_hospi
-EE,,Uusi inimesi haiglasse,curr_hospi
+EE,,Haiglast välja saanud patsientide arv (TA raporteerib mai algusest),discharged
+EE,,Lahkunud haiglas (kumulatiivne),dead_in_hospital
 EE,,Lahkunud,cum_dead
 EE,,Lahkunud haiglas (kumulatiivne),cum_out_hospi
 EE,,Kokku testituid,cum_tested
