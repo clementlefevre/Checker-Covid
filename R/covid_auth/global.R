@@ -19,7 +19,7 @@ source("patch.R")
 
 dir.create(file.path("./temp"), showWarnings = FALSE)
 
-# sample logins dataframe with passwords hashed by sodium package
+# load the uses dataframe with passwords hashed by sodium package
 user_base <- read.csv("data/users.csv", stringsAsFactors = F) %>% as_tibble()
 user_base$password <- sapply(user_base$password, sodium::password_store)
 
@@ -111,8 +111,6 @@ saveDTtoS3 <- function(DT, filename) {
 }
 
 DT <- loadData()
-
-browser()
 
 country.list <- NULL
 dates.list <- NULL
