@@ -1,0 +1,23 @@
+---
+title: "Convert Excel File to csv in a tidy format"
+output: html_notebook
+---
+
+ 
+
+```{r}
+library(readxl)
+library(tidyr)
+library(dplyr)
+```
+
+```{r}
+df <-  read_xlsx("Dataset COVID-19-STATS_hospitalisations_clean.xlsx",sheet = "COVID STATS")
+df.gather <- df %>% 
+  gather(variable, value, -Date) %>% 
+  separate(variable, c("group", "type"), sep = "\\_")
+unique(df$type)
+
+write.csv(df.gather,"Dataset COVID-19-STATS_hospitalisations.csv" )
+```
+
