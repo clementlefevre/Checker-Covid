@@ -4,7 +4,7 @@ boto3==1.12.39
 schedule==0.6.0
 requests==2.23.0
 pandas==1.0.3
-lxml==4.5.0
+lxml==4.6.5
 pdfminer==20191125
 pygsheets==2.0.3.1
 tabula==1.0.5
